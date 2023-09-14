@@ -1,0 +1,19 @@
+# Logs
+logs
+*.log
+
+# Node.js
+node_modules/
+
+# Build files
+build/
+dist/
+
+# Dependency directories
+.jest/
+.pnpm/
+.yarn/
+yarn-error.log
+
+# Optional: environment variables file
+.env
