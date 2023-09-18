@@ -13,10 +13,11 @@ const dbHost = process.env.DB_HOST;
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
 const dbName = process.env.DB_DATABASE;
+const secretKey = process.env.SECRET_KEY;
 const port = process.env.PORT || 5000;
 
 // Check if all necessary environment variables were set
-if (!dbHost || !dbUser || !dbPassword || !dbName) {
+if (!dbHost || !dbUser || !dbPassword || !dbName || !secretKey) {
     throw new Error('Environment variables not set and no .env file found');
 }
 
@@ -43,11 +44,13 @@ const app = express();
 
 app.use(express.json());
 
+// Import your sequelize models
 const Company = require('./models/Company'); 
-Company.sync({ force: false })
+Company.sync({ force: false });
 
-const companyRoutes = require('./routes/companyRoutes');
-app.use('/company', companyRoutes);
+// Import your routes
+const authenticationRoutes = require('./routes/authentication');
+app.use('/auth', authenticationRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

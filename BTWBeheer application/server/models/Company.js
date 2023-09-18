@@ -28,10 +28,6 @@ const Company = sequelize.define('Company', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    password_salt: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     business_name: {
         type: DataTypes.STRING,
         allowNull: false,
