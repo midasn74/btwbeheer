@@ -1,10 +1,9 @@
 const express = require('express');
 const Sequelize = require('sequelize');
 
-const dotenv = require('dotenv');
-
 // Load environment variables from .env file if the environment variables are not set
 if (!process.env.DB_HOST) {
+    const dotenv = require('dotenv');
     dotenv.config();
     console.log('Environment variables loaded from .env file');
 }
@@ -14,11 +13,12 @@ const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
 const dbName = process.env.DB_DATABASE;
 const secretKey = process.env.SECRET_KEY;
+const jwt_expiration = process.env.JWT_EXPIRATION;
 const port = process.env.PORT || 5000;
 
 // Check if all necessary environment variables were set
-if (!dbHost || !dbUser || !dbPassword || !dbName || !secretKey) {
-    throw new Error('Environment variables not set and no .env file found');
+if (!dbHost || !dbUser || !dbPassword || !dbName || !secretKey || !jwt_expiration) {
+    throw new Error('Environment variables not set and no (complete) .env file found');
 }
 
 // Create a Sequelize instance with your credentials
@@ -44,14 +44,17 @@ const app = express();
 
 app.use(express.json());
 
-// Import your sequelize models
+// Import sequelize models
 const Company = require('./models/Company'); 
 Company.sync({ force: false });
 
-// Import your routes
-const authenticationRoutes = require('./routes/authentication');
+// Import routes
+const authenticationRoutes = require('./routes/authRoutes');
 app.use('/auth', authenticationRoutes);
+const companyRoutes = require('./routes/companiesRoutes');
+app.use('/companies', companyRoutes);
 
+// Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

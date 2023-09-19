@@ -37,10 +37,12 @@ router.post('/register', async (req, res) => {
             default_payment_term_days, 
             default_quotation_validity_days 
         });
+
+        const token = jwt.sign({ sub: company.business_id }, process.env.SECRET_KEY, {
+            expiresIn: process.env.JWT_EXPIRATION,
+        });
     
-        // You can also generate a JWT token here for immediate login
-    
-        res.status(201).json({ message: 'Company registered successfully' });
+        res.status(200).json({ token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
@@ -65,8 +67,8 @@ router.post('/login', async (req, res) => {
         }
     
         // Generate a JWT token for authentication
-        const token = jwt.sign({ companyId: company.business_id }, process.env.SECRET_KEY, {
-            expiresIn: '1h', // Token expiration time
+        const token = jwt.sign({ sub: company.business_id }, process.env.SECRET_KEY, {
+            expiresIn: process.env.JWT_EXPIRATION,
         });
     
         res.status(200).json({ token });
