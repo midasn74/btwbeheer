@@ -44,15 +44,22 @@ const app = express();
 
 app.use(express.json());
 
+// Import sequelize models and sync them with the database
 // Import sequelize models
-const Company = require('./models/Company'); 
-Company.sync({ force: false });
+const modelsToSync = ['Company', 'Relation', 'Invoice', 'Quotation', 'Product'];
+
+for (const modelName of modelsToSync) {
+const Model = require(`./models/${modelName}`);
+    Model.sync({ force: false });
+}
 
 // Import routes
-const authenticationRoutes = require('./routes/authRoutes');
-app.use('/auth', authenticationRoutes);
-const companyRoutes = require('./routes/companiesRoutes');
-app.use('/companies', companyRoutes);
+const routeNames = ['auth', 'companies'];
+
+routeNames.forEach(routeName => {
+  const routes = require(`./routes/${routeName}`);
+  app.use(`/${routeName}`, routes);
+});
 
 // Start the server
 app.listen(port, () => {

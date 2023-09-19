@@ -10,7 +10,7 @@ const sequelize = new Sequelize({
 });
 
 // Define the Company model
-const Relation = sequelize.define('Relation', { 
+const Relation = sequelize.define('relations', { 
     relation_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -21,7 +21,7 @@ const Relation = sequelize.define('Relation', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Company',
+            model: 'companies',
             key: 'company_id',
         },
     },

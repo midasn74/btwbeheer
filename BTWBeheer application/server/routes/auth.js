@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 // Route to register a new company
 router.post('/register', async (req, res) => {
     try {
-        const { login_mail, password, business_name, contact_mail, contact_phone_number, bank_number, kvk_number, vat_number, vat_declaration_interval, address, postal_code, city, country, default_payment_term_days, default_quotation_validity_days } = req.body;
+        const { login_mail, password, company_name, contact_mail, contact_phone_number, bank_number, kvk_number, vat_number, vat_declaration_interval, address, postal_code, city, country, default_payment_term_days, default_quotation_validity_days } = req.body;
     
         // Check if the email is already registered
         const existingCompany = await Company.findOne({ where: { login_mail } });
@@ -20,10 +20,10 @@ router.post('/register', async (req, res) => {
         const passwordHash = await bcrypt.hash(password, saltRounds);
     
         // Create a new company
-        const newCompany = await Company.create({ 
+        const company = await Company.create({ 
             login_mail, 
             password_hash: passwordHash, 
-            business_name, 
+            company_name, 
             contact_mail, 
             contact_phone_number, 
             bank_number, 
@@ -36,10 +36,6 @@ router.post('/register', async (req, res) => {
             country, 
             default_payment_term_days, 
             default_quotation_validity_days 
-        });
-
-        const token = jwt.sign({ sub: company.business_id }, process.env.SECRET_KEY, {
-            expiresIn: process.env.JWT_EXPIRATION,
         });
     
         res.status(200).json({ token });
@@ -67,7 +63,7 @@ router.post('/login', async (req, res) => {
         }
     
         // Generate a JWT token for authentication
-        const token = jwt.sign({ sub: company.business_id }, process.env.SECRET_KEY, {
+        const token = jwt.sign({ sub: company.company_id }, process.env.SECRET_KEY, {
             expiresIn: process.env.JWT_EXPIRATION,
         });
     

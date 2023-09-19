@@ -10,7 +10,7 @@ const sequelize = new Sequelize({
 });
 
 // Define the Company model
-const Quotation = sequelize.define('Quotation', { 
+const Quotation = sequelize.define('quotations', { 
     quotation_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -21,7 +21,7 @@ const Quotation = sequelize.define('Quotation', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Company',
+            model: 'companies',
             key: 'company_id',
         },
     },
@@ -29,7 +29,7 @@ const Quotation = sequelize.define('Quotation', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Relation',
+            model: 'relations',
             key: 'relation_id',
         },
     },

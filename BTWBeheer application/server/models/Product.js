@@ -10,7 +10,7 @@ const sequelize = new Sequelize({
 });
 
 // Define the Company model
-const Product = sequelize.define('Product', { 
+const Product = sequelize.define('products', { 
     product_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -21,7 +21,7 @@ const Product = sequelize.define('Product', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Company',
+            model: 'companies',
             key: 'company_id',
         },
     },
@@ -29,7 +29,7 @@ const Product = sequelize.define('Product', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'Invoice',
+            model: 'invoices',
             key: 'invoice_id',
         },
     },
@@ -37,7 +37,7 @@ const Product = sequelize.define('Product', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'Quotation',
+            model: 'quotations',
             key: 'quotation_id',
         },
     },

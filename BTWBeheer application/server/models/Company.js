@@ -10,8 +10,8 @@ const sequelize = new Sequelize({
 });
 
 // Define the Company model
-const Company = sequelize.define('Company', { 
-    business_id: {
+const Company = sequelize.define('companies', { 
+    company_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
@@ -28,7 +28,7 @@ const Company = sequelize.define('Company', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    business_name: {
+    company_name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
