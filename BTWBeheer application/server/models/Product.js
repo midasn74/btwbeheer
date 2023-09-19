@@ -10,8 +10,8 @@ const sequelize = new Sequelize({
 });
 
 // Define the Company model
-const Quotation = sequelize.define('Quotation', { 
-    quotation_id: {
+const Product = sequelize.define('Product', { 
+    product_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
@@ -25,33 +25,42 @@ const Quotation = sequelize.define('Quotation', {
             key: 'company_id',
         },
     },
-    relation_id: {
+    invoice_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'Relation',
-            key: 'relation_id',
-        },
-    },
-    quotation_description: {
-        type: DataTypes.STRING(255),
         allowNull: true,
+        references: {
+            model: 'Invoice',
+            key: 'invoice_id',
+        },
     },
-    creation_date: {
-        type: DataTypes.DATE,
+    quotation_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'Quotation',
+            key: 'quotation_id',
+        },
+    },
+    product_description: {
+        type: DataTypes.STRING(255),
         allowNull: false,
     },
-    valid_until: {
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-    quotation_validity_days: {
+    quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        validate: {
-            isNumeric: true,
-        },
+    },
+    price_per_unit_ex_vat: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+    },
+    vat_percentage: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+    },
+    discount_percentage: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
     },
 });
 
-module.exports = Quotation;
+module.exports = Product;

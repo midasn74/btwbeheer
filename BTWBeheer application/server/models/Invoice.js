@@ -46,7 +46,7 @@ const Invoice = sequelize.define('Invoice', {
         allowNull: false,
     },
     payment_term_days: {
-        type: DataTypes.integer,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             isNumeric: true,
