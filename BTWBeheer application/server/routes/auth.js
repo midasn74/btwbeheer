@@ -3,9 +3,10 @@ const router = express.Router();
 const Company = require('../models/Company');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const validateCompany = require('./middleWares/validation/company');
 
 // Route to register a new company
-router.post('/register', async (req, res) => {
+router.post('/register', validateCompany, async (req, res) => {
     try {
         const { login_mail, password, company_name, contact_mail, contact_phone_number, bank_number, kvk_number, vat_number, vat_declaration_interval, address, postal_code, city, country, default_payment_term_days, default_quotation_validity_days } = req.body;
     

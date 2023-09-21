@@ -3,7 +3,7 @@ const router = express.Router();
 const Company = require('../models/Company');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const authenticateToken = require('./authMiddleware');
+const authenticateToken = require('./middleWares/authentication/login');
 
 router.get('/:companyId', authenticateToken, async (req, res) => {
     try {
