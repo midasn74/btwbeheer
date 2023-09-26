@@ -3,6 +3,9 @@ const router = express.Router();
 
 const authenticateToken = require('./Authentication/tokenAuthentication');
 
+const validateRelation = require('./Validation/relationValidation');
+const validateRelationPatch = require('./Validation/relationPatchValidation');
+
 const { Relation } = require('../sequelize');
 const { Company } = require('../sequelize');
 
