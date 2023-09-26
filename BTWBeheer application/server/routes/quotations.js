@@ -35,13 +35,14 @@ router.patch('/:quotationId', [validateQuotationPatch, authenticateToken], async
     try {
         const quotationId = parseInt(req.params.quotationId, 10);
 
+        const quotation = await Quotation.findByPk(quotationId);
+
         // Check if the authenticated company has permission to access the requested quotation's data
-        if (req.AuthCompanyId !== Quotation.findByPk(quotationId).company_id) {
+        if (req.AuthCompanyId !== quotation.company_id) {
             return res.status(403).json({ error: 'Access denied' });
         }
 
         // Fetch the quotation data
-        const quotation = await Quotation.findByPk(quotationId);
         if (!quotation) {
             return res.status(404).json({ error: 'Quotation not found' });
         }
@@ -58,13 +59,14 @@ router.get('/:quotationId', authenticateToken, async (req, res) => {
     try {
         const quotationId = parseInt(req.params.quotationId, 10);
 
+        const quotation = await Quotation.findByPk(quotationId);
+
         // Check if the authenticated company has permission to access the requested quotation's data
-        if (req.AuthCompanyId !== Quotation.findByPk(quotationId).company_id) {
+        if (req.AuthCompanyId !== quotation.company_id) {
             return res.status(403).json({ error: 'Access denied' });
         }
 
         // Fetch the quotation data
-        const quotation = await Quotation.findByPk(quotationId);
         if (!quotation) {
             return res.status(404).json({ error: 'Quotation not found' });
         }
@@ -81,13 +83,14 @@ router.delete('/:quotationId', authenticateToken, async (req, res) => {
     try {
         const quotationId = parseInt(req.params.quotationId, 10);
 
+        const quotation = await Quotation.findByPk(quotationId);
+
         // Check if the authenticated company has permission to access the requested quotation's data
-        if (req.AuthCompanyId !== Quotation.findByPk(quotationId).company_id) {
+        if (req.AuthCompanyId !== quotation.company_id) {
             return res.status(403).json({ error: 'Access denied' });
         }
 
         // Fetch the quotation data
-        const quotation = await Quotation.findByPk(quotationId);
         if (!quotation) {
             return res.status(404).json({ error: 'Quotation not found' });
         }
