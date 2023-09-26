@@ -9,11 +9,16 @@ const { Company } = require('../sequelize');
 // Route to create a new invoice
 router.post('/', [validateInvoice, authenticateToken], async (req, res) => {
     try {
-        const {  } = req.body;
+        const { company_id, relation_id, invoice_description, creation_date, due_date, payment_term_days } = req.body;
     
         // Create a new invoice
         const invoice = await Invoice.create({ 
-            
+            company_id,
+            relation_id,
+            invoice_description,
+            creation_date,
+            due_date,
+            payment_term_days
         });
     
         res.status(200).json({ invoice });
@@ -38,7 +43,8 @@ router.patch('/:invoiceId', [validateInvoicePatch, authenticateToken], async (re
             return res.status(404).json({ error: 'Invoice not found' });
         }
 
-        // Patch the invoice
+        // Patch the invoice, only update the fields that are included in the request body
+        await invoice.update(req.body);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
