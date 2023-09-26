@@ -26,7 +26,7 @@ const app = express();
 app.use(express.json());
 
 // Import routes
-const routeNames = ['account', 'companies', 'invoices'];
+const routeNames = ['account', 'companies', 'invoices', 'relations'];
 
 routeNames.forEach(routeName => {
   const routes = require(`./routes/${routeName}`);
