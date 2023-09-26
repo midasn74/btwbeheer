@@ -4,6 +4,54 @@ const validateRelation = [
     body('company_id')
         .notEmpty().withMessage('A company is required')
         .isNumeric().withMessage('Company id must be a number'),
+
+    body('relation_name')
+        .notEmpty().withMessage('A relation name is required')
+        .isString().withMessage('Relation name must be a string'),
+    
+    body('relation_contact')
+        .notEmpty().withMessage('A relation contact is required')
+        .isString().withMessage('Relation contact must be a string'),
+
+    body('relation_email')
+        .notEmpty().withMessage('A relation email is required')
+        .isEmail().withMessage('Relation email must be an email'),
+    
+    body('relation_phone')
+        .notEmpty().withMessage('A relation phone is required')
+        .isMobilePhone('any').withMessage('Relation phone must be a phone number'),
+    
+    body('relation_address')
+        .notEmpty().withMessage('A relation address is required')
+        .isString().withMessage('Relation address must be a string'),
+
+    body('relation_postal_code')
+        .notEmpty().withMessage('A relation postal code is required')
+        .isPostalCode('any').withMessage('Relation postal code must be a postal code'),
+
+    body('relation_city')
+        .notEmpty().withMessage('A relation city is required')
+        .isString().withMessage('Relation city must be a string'),
+
+    body('relation_country')
+        .notEmpty().withMessage('A relation country is required')
+        .isString().withMessage('Relation country must be a string'),
+
+    body('relation_kvk_number')
+        .notEmpty().withMessage('A relation kvk number is required')
+        .isString().withMessage('Relation kvk number must be a string'),
+
+    body('relation_vat_number')
+        .notEmpty().withMessage('A relation vat number is required')
+        .isString().withMessage('Relation vat number must be a string'),
+
+    body('relation_iban')
+        .notEmpty().withMessage('A relation iban is required')
+        .isIBAN().withMessage('Relation iban must be an iban'),
+
+    body('relation_salutation')
+        .notEmpty().withMessage('A relation salutation is required')
+        .isString().withMessage('Relation salutation must be a string'),
         
     // After defining validation rules, handle the route logic
     (req, res, next) => {
