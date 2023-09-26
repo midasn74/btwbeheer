@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Company = require('../models/Company');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const authenticateToken = require('./middleWares/authentication/login');
+const { Company } = require('../sequelize');
+const authenticateToken = require('./Authentication/tokenAuthentication');
 
 router.get('/:companyId', authenticateToken, async (req, res) => {
     try {

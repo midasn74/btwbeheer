@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const Company = require('../models/Company');
+const { Company } = require('../sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const validateCompany = require('./middleWares/validation/company');
+const registrationValidation = require('./Validation/registrationValidation');
+const passwordValidation = require('./Validation/passwordValidation');
+const authenticateToken = require('./Authentication/tokenAuthentication');
 
 // Route to register a new company
-router.post('/register', validateCompany, async (req, res) => {
+router.post('/register', registrationValidation, async (req, res) => {
     try {
         const { login_mail, password, company_name, contact_mail, contact_phone_number, bank_number, kvk_number, vat_number, vat_declaration_interval, address, postal_code, city, country, default_payment_term_days, default_quotation_validity_days } = req.body;
-    
-        // Check if the email is already registered
-        const existingCompany = await Company.findOne({ where: { login_mail } });
-        if (existingCompany) {
-          return res.status(400).json({ error: 'Email already in use' });
-        }
     
         // Hash the password
         const saltRounds = 12;
@@ -39,7 +35,7 @@ router.post('/register', validateCompany, async (req, res) => {
             default_quotation_validity_days 
         });
     
-        res.status(200).json({ token });
+        res.status(200).json({ company });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
@@ -69,6 +65,34 @@ router.post('/login', async (req, res) => {
         });
     
         res.status(200).json({ token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Route to change password
+router.post('/change-password', [authenticateToken, passwordValidation], async (req, res) => {
+    try {
+        const company = await Company.findByPk(req.AuthCompanyId);
+
+        const { old_password, new_password } = req.body;
+
+        // Compare the old password with the stored hash
+        const passwordMatch = await bcrypt.compare(old_password, company.password_hash);
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid old password' });
+        }
+    
+        // Hash the password
+        const saltRounds = 12;
+        const passwordHash = await bcrypt.hash(new_password, saltRounds);
+    
+        // Get company and change password
+        company.password_hash = passwordHash;
+        await company.save();
+    
+        res.status(200).json({ company });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
