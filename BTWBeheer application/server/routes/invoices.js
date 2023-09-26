@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { Invoice } = require('../sequelize');
+
 const authenticateToken = require('./Authentication/tokenAuthentication');
+
 const validateInvoice = require('./Validation/invoiceValidation');
 const validateInvoicePatch = require('./Validation/invoicePatchValidation');
+
+const { Invoice } = require('../sequelize');
 const { Company } = require('../sequelize');
 
 // Route to create a new invoice
