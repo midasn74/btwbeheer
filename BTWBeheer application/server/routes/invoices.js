@@ -114,6 +114,10 @@ router.get('/company/:companyId', authenticateToken, async (req, res) => {
 
         const company = await Company.findByPk(req.AuthCompanyId);
 
+        if (!company) {
+            return res.status(404).json({ error: 'Company not found' });
+        }
+
         // Fetch all invoices for the company
         const invoices = await Invoice.findAll({ where: { company_id: companyId } });
         if (!invoices || invoices.length === 0) {

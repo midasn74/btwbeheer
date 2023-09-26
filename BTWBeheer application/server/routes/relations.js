@@ -118,6 +118,10 @@ router.get('/company/:companyId', authenticateToken, async (req, res) => {
 
         const company = await Company.findByPk(req.AuthCompanyId);
 
+        if (!company) {
+            return res.status(404).json({ error: 'Company not found' });
+        }
+
         // Fetch all relations for the company
         const relations = await Relation.findAll({ where: { company_id: companyId } });
         if (!relations || relations.length === 0) {
