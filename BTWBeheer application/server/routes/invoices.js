@@ -37,6 +37,10 @@ router.patch('/:invoiceId', [validateInvoicePatch, authenticateToken], async (re
 
         const invoice = await Invoice.findByPk(invoiceId);
 
+        if (!invoice) {
+            return res.status(404).json({ error: 'Invoice not found' });
+        }
+
         // Check if the authenticated company has permission to access the requested invoice's data
         if (req.AuthCompanyId !== invoice.company_id) {
             return res.status(403).json({ error: 'Access denied' });
@@ -61,6 +65,10 @@ router.get('/:invoiceId', authenticateToken, async (req, res) => {
 
         const invoice = await Invoice.findByPk(invoiceId);
 
+        if (!invoice) {
+            return res.status(404).json({ error: 'Invoice not found' });
+        }
+
         // Check if the authenticated company has permission to access the requested invoice's data
         if (req.AuthCompanyId !== invoice.company_id) {
             return res.status(403).json({ error: 'Access denied' });
@@ -84,6 +92,10 @@ router.delete('/:invoiceId', authenticateToken, async (req, res) => {
         const invoiceId = parseInt(req.params.invoiceId, 10);
 
         const invoice = await Invoice.findByPk(invoiceId);
+
+        if (!invoice) {
+            return res.status(404).json({ error: 'Invoice not found' });
+        }
 
         // Check if the authenticated company has permission to access the requested invoice's data
         if (req.AuthCompanyId !== invoice.company_id) {

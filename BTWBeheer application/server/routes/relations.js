@@ -62,6 +62,10 @@ router.delete('/:relationId', authenticateToken, async (req, res) => {
 
         const relation = await Relation.findByPk(relationId);
 
+        if (!relation) {
+            return res.status(404).json({ error: 'Relation not found' });
+        }
+
         // Check if the authenticated company has permission to access the requested relations's data
         if (req.AuthCompanyId !== relation.company_id) {
             return res.status(403).json({ error: 'Access denied' });
@@ -89,6 +93,10 @@ router.get('/:relationId', authenticateToken, async (req, res) => {
         const relationId = parseInt(req.params.relationId, 10);
 
         const relation = await Relation.findByPk(relationId)
+
+        if (!relation) {
+            return res.status(404).json({ error: 'Relation not found' });
+        }
 
         // Check if the authenticated company has permission to access the requested relation's data
         if (req.AuthCompanyId !== relation.company_id) {

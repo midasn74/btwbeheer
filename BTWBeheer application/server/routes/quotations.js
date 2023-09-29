@@ -37,6 +37,10 @@ router.patch('/:quotationId', [validateQuotationPatch, authenticateToken], async
 
         const quotation = await Quotation.findByPk(quotationId);
 
+        if (!quotation) {
+            return res.status(404).json({ error: 'Quotation not found' });
+        }
+
         // Check if the authenticated company has permission to access the requested quotation's data
         if (req.AuthCompanyId !== quotation.company_id) {
             return res.status(403).json({ error: 'Access denied' });
@@ -61,6 +65,10 @@ router.get('/:quotationId', authenticateToken, async (req, res) => {
 
         const quotation = await Quotation.findByPk(quotationId);
 
+        if (!quotation) {
+            return res.status(404).json({ error: 'Quotation not found' });
+        }
+
         // Check if the authenticated company has permission to access the requested quotation's data
         if (req.AuthCompanyId !== quotation.company_id) {
             return res.status(403).json({ error: 'Access denied' });
@@ -84,6 +92,10 @@ router.delete('/:quotationId', authenticateToken, async (req, res) => {
         const quotationId = parseInt(req.params.quotationId, 10);
 
         const quotation = await Quotation.findByPk(quotationId);
+
+        if (!quotation) {
+            return res.status(404).json({ error: 'Quotation not found' });
+        }
 
         // Check if the authenticated company has permission to access the requested quotation's data
         if (req.AuthCompanyId !== quotation.company_id) {
