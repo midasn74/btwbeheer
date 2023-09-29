@@ -49,6 +49,9 @@ router.patch('/:relation_id', [validateRelationPatch, authenticateToken], async 
 
         // Update the relation, only update changed parts
         await relation.update(req.body);
+
+        // Respond with the updated relation
+        res.status(200).json({ relation });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });

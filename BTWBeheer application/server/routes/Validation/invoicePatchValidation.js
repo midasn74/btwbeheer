@@ -2,12 +2,10 @@ const { body, validationResult } = require('express-validator');
 
 const validateInvoice = [
     body('company_id')
-        .optional()
-        .isNumeric().withMessage('Company id must be a number'),
+        .isEmpty().withMessage('Company id must be empty'),
 
     body('relation_id')
-        .optional()
-        .isNumeric().withMessage('Relation id must be a number'),
+        .isEmpty().withMessage('Company id must be empty'),
 
     body('invoice_description')
         .optional()

@@ -46,13 +46,11 @@ router.patch('/:invoiceId', [validateInvoicePatch, authenticateToken], async (re
             return res.status(403).json({ error: 'Access denied' });
         }
 
-        // Fetch the invoice data
-        if (!invoice) {
-            return res.status(404).json({ error: 'Invoice not found' });
-        }
-
         // Patch the invoice, only update the fields that are included in the request body
         await invoice.update(req.body);
+
+        // Respond with the updated invoice
+        res.status(200).json({ invoice });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });

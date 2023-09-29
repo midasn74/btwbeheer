@@ -46,13 +46,11 @@ router.patch('/:quotationId', [validateQuotationPatch, authenticateToken], async
             return res.status(403).json({ error: 'Access denied' });
         }
 
-        // Fetch the quotation data
-        if (!quotation) {
-            return res.status(404).json({ error: 'Quotation not found' });
-        }
-
         // Patch the quotation, only update the fields that are included in the request body
         await quotation.update(req.body);
+
+        // Respond with the updated quotation
+        res.status(200).json({ quotation });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
