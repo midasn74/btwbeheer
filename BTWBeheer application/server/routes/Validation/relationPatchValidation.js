@@ -46,7 +46,7 @@ const validateRelation = [
 
     body('relation_iban')
         .optional() 
-        .isIBAN().withMessage('Relation iban must be an iban'),
+        .isIBAN().withMessage('Relation IBAN must be an IBAN'),
 
     body('relation_salutation')
         .optional() 
