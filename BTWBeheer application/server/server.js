@@ -30,7 +30,7 @@ const routeNames = ['account', 'companies', 'invoices', 'relations', 'quotations
 
 routeNames.forEach(routeName => {
   const routes = require(`./routes/${routeName}`);
-  app.use(`/${routeName}`, routes);
+  app.use(`/api/${routeName}`, routes);
 });
 
 // Start the server
