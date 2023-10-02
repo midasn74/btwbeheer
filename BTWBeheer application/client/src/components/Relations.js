@@ -43,12 +43,13 @@ const Dashboard = () => {
                 </p>
             </Alert>
         : 
-            <Table striped bordered hover variant="dark">
+            <Table striped hover responsive variant="dark">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Name</th>
                         <th>Contact person</th>
+                        <th>Phone number</th>
                         <th>E-mail</th>
                         <th>Address</th>
                         <th>Postal code</th>
@@ -61,20 +62,23 @@ const Dashboard = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                        {relations.map(relation => (  
+                            <tr>
+                                <td>{relation.relation_id}</td>  
+                                <td>{relation.relation_name}</td>  
+                                <td>{relation.relation_contact}</td>  
+                                <td>{relation.relation_email}</td>  
+                                <td>{relation.relation_phone}</td>  
+                                <td>{relation.relation_address}</td>  
+                                <td>{relation.relation_postal_code}</td>  
+                                <td>{relation.relation_city}</td>  
+                                <td>{relation.relation_country}</td>  
+                                <td>{relation.relation_kvk_number}</td>  
+                                <td>{relation.relation_vat_number}</td>  
+                                <td>{relation.relation_iban}</td>  
+                                <td>{relation.relation_salutation}</td>  
+                            </tr>
+                        ))}  
                 </tbody>
             </Table>
         }
