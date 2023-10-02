@@ -63,8 +63,9 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ sub: company.company_id }, process.env.SECRET_KEY, {
             expiresIn: process.env.JWT_EXPIRATION,
         });
+        const company_id = company.company_id;
     
-        res.status(200).json({ token });
+        res.status(200).json({ token, company_id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
@@ -92,6 +93,23 @@ router.post('/change-password', [authenticateToken, passwordValidation], async (
         company.password_hash = passwordHash;
         await company.save();
     
+        res.status(200).json({ company });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Route to set the companies logo
+router.post('/set-company-logo', [authenticateToken], async (req, res) => {
+    try {
+        const company = await Company.findByPk(req.AuthCompanyId);
+
+        const { company_logo } = req.body;
+
+        company.company_logo = company_logo;
+        await company.save();
+
         res.status(200).json({ company });
     } catch (error) {
         console.error(error);

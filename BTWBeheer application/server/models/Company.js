@@ -70,6 +70,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        company_logo: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
         default_payment_term_days: {
             type: DataTypes.INTEGER,
             allowNull: false,

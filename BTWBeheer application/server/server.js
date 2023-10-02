@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 // Load environment variables from .env file if the environment variables are not set
 if (!process.env.DB_HOST) {
@@ -24,6 +25,7 @@ const sequelize = require('./sequelize');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Import routes
 const routeNames = ['account', 'companies', 'invoices', 'relations', 'quotations'];
