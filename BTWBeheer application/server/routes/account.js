@@ -46,6 +46,10 @@ router.post('/register', registrationValidation, async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { login_mail, password } = req.body;
+
+        if (login_mail === '' || password === '') {
+            return res.status(401).json({ error: 'Please fill in all required fields' });
+        }
     
         // Find the company by email
         const company = await Company.findOne({ where: { login_mail } });

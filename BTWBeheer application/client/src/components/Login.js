@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import { Form, Button, Card, Alert } from 'react-bootstrap';
+
 const Login = () => {
   const [formData, setFormData] = useState({
     login_mail: '',
     password: ''
   });
+
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,35 +31,49 @@ const Login = () => {
         window.location.href = '/';
     
     } catch (error) {
-      console.error('Login failed:', error);
+        console.error('Login failed:', error);
+        setErrorMessage(error.response.data.error);
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="text"
-            name="login_mail"
-            value={formData.login_mail}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <>
+
+        <Card className="mx-auto" style={{ width: '24rem', padding: '10px' }} >
+            <Card.Img variant="top" style={{ padding: '15px' }} src="img/logoFull.svg" />
+            <Card.Body>
+                <Card.Title>Login</Card.Title>
+
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control type="email" name="login_mail" value={formData.login_mail} onChange={handleChange} placeholder="Enter email" />
+                        <Form.Text className="text-muted">
+                            We'll never share your email with anyone else.
+                        </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                        <Form.Check type="checkbox" label="Remember me" />
+                    </Form.Group>
+
+                    { errorMessage != null ? 
+                        <Alert key={'danger'} variant={'danger'}>
+                            { errorMessage }
+                        </Alert> 
+                        : 
+                        null
+                    }
+
+                    <Button variant="primary" style={{ width: "100%" }} type="submit">Submit</Button>
+                </Form>
+            </Card.Body>
+        </Card>
+    </>
   );
 };
 
