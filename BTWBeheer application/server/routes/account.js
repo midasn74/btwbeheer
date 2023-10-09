@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Company } = require('../sequelize');
+const { getCompanyById, getCompanyByLoginMail, createCompany, alterCompany } = require('../services/companyService');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const registrationValidation = require('./Validation/registrationValidation');
@@ -14,12 +14,12 @@ router.post('/register', registrationValidation, async (req, res) => {
     
         // Hash the password
         const saltRounds = 12;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
+        const password_hash = await bcrypt.hash(password, saltRounds);
     
         // Create a new company
-        const company = await Company.create({ 
+        const company = await createCompany({ 
             login_mail, 
-            password_hash: passwordHash, 
+            password_hash, 
             company_name, 
             contact_mail, 
             contact_phone_number, 
@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
         }
     
         // Find the company by email
-        const company = await Company.findOne({ where: { login_mail } });
+        const company = await getCompanyByLoginMail( login_mail );
         if (!company) {
             return res.status(401).json({ error: 'Invalid login credentials' });
         }
@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
 // Route to change password
 router.post('/change-password', [authenticateToken, passwordValidation], async (req, res) => {
     try {
-        const company = await Company.findByPk(req.AuthCompanyId);
+        const company = await getCompanyById(req.AuthCompanyId);
 
         const { old_password, new_password } = req.body;
 
@@ -94,8 +94,8 @@ router.post('/change-password', [authenticateToken, passwordValidation], async (
     
         // Get company and change password
         company.password_hash = passwordHash;
-        await company.save();
-    
+        await alterCompany(company);
+
         res.status(200).json({ company });
     } catch (error) {
         console.error(error);
@@ -106,12 +106,12 @@ router.post('/change-password', [authenticateToken, passwordValidation], async (
 // Route to set the companies logo
 router.post('/set-company-logo', [authenticateToken], async (req, res) => {
     try {
-        const company = await Company.findByPk(req.AuthCompanyId);
+        const company = await getCompanyById(req.AuthCompanyId);
 
         const { company_logo } = req.body;
 
         company.company_logo = company_logo;
-        await company.save();
+        await alterCompany(company);
 
         res.status(200).json({ company });
     } catch (error) {

@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
         login_mail: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
                 isEmail: true,
             },
@@ -71,7 +72,7 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         company_logo: {
-            type: DataTypes.TEXT,
+            type: DataTypes.TEXT('long'),
             allowNull: true,
         },
         default_payment_term_days: {
