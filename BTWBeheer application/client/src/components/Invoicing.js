@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import fetchCompanyData from '../api/getCompany';
 import fetchInvoicesData from '../api/getInvoices';
+import fetchRelationsData from '../api/getRelations';
 
 import FullNavbar from './FullNavbar';
 
@@ -10,9 +11,11 @@ import { Alert, Table, Button, Container, Row, Col } from 'react-bootstrap';
 const Dashboard = () => {
     const [company, setCompany] = useState(null); 
     const [invoices, setInvoices] = useState(null); 
+    const [relations, setRelations] = useState(null);
 
     useEffect(() => {
         fetchCompanyData(setCompany);
+        fetchRelationsData(setRelations);
         fetchInvoicesData(setInvoices);
     }, []);
 
@@ -54,15 +57,20 @@ const Dashboard = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {invoices.map(invoice => (  
-                        <tr>
-                            <td>{invoice.invoice_id}</td>  
-                            <td>{invoice.creation_date}</td>  
-                            <td>{invoice.relation_id}</td>  
-                            <td>{invoice.invoice_description}</td>  
-                            <td>{invoice.due_date}</td>  
-                        </tr>
-                    ))}  
+                    {invoices.map(invoice => {
+                        // Find the corresponding relation using relation_id
+                        const relatedRelation = relations.find(relation => relation.relation_id === invoice.relation_id);
+
+                        return (
+                            <tr key={invoice.invoice_id}>
+                                <td>{invoice.invoice_id}</td>
+                                <td>{invoice.creation_date}</td>
+                                <td>{relatedRelation ? relatedRelation.relation_name : 'N/A'}</td>
+                                <td>{invoice.invoice_description}</td>
+                                <td>{invoice.due_date}</td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </Table>
         }
