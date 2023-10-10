@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const authenticateToken = require('./Authentication/tokenAuthentication');
-
 const validateQuotation = require('./Validation/quotationValidation');
 const validateQuotationPatch = require('./Validation/quotationPatchValidation');
 
-const { Quotation } = require('../sequelize');
-const { Company } = require('../sequelize');
+const { getQuotationById, createQuotation, alterQuotation, deleteQuotation, getQuotationsOfCompany } = require('../services/quotationService');
+const { getCompanyById } = require('../services/companyService');
 
 // Route to create a new quotation
 router.post('/', [validateQuotation, authenticateToken], async (req, res) => {
@@ -15,7 +14,7 @@ router.post('/', [validateQuotation, authenticateToken], async (req, res) => {
         const { company_id, relation_id, quotation_description, creation_date, valid_until, quotation_validity_days } = req.body;
     
         // Create a new quotation
-        const quotation = await Quotation.create({ 
+        const quotation = await createQuotation({ 
             company_id,
             relation_id,
             quotation_description,
@@ -35,7 +34,7 @@ router.patch('/:quotationId', [validateQuotationPatch, authenticateToken], async
     try {
         const quotationId = parseInt(req.params.quotationId, 10);
 
-        const quotation = await Quotation.findByPk(quotationId);
+        const quotation = await getQuotationById(quotationId);
 
         if (!quotation) {
             return res.status(404).json({ error: 'Quotation not found' });
@@ -47,7 +46,10 @@ router.patch('/:quotationId', [validateQuotationPatch, authenticateToken], async
         }
 
         // Patch the quotation, only update the fields that are included in the request body
-        await quotation.update(req.body);
+        Object.keys(req.body).forEach(key => {
+            quotation[key] = req.body[key];
+        });
+        await alterQuotation(quotationId, quotation);
 
         // Respond with the updated quotation
         res.status(200).json({ quotation });
@@ -61,7 +63,7 @@ router.get('/:quotationId', authenticateToken, async (req, res) => {
     try {
         const quotationId = parseInt(req.params.quotationId, 10);
 
-        const quotation = await Quotation.findByPk(quotationId);
+        const quotation = await getQuotationById(quotationId);
 
         if (!quotation) {
             return res.status(404).json({ error: 'Quotation not found' });
@@ -89,7 +91,7 @@ router.delete('/:quotationId', authenticateToken, async (req, res) => {
     try {
         const quotationId = parseInt(req.params.quotationId, 10);
 
-        const quotation = await Quotation.findByPk(quotationId);
+        const quotation = await getQuotationById(quotationId);
 
         if (!quotation) {
             return res.status(404).json({ error: 'Quotation not found' });
@@ -106,7 +108,7 @@ router.delete('/:quotationId', authenticateToken, async (req, res) => {
         }
 
         // Delete the quotation
-        await quotation.destroy();
+        await deleteQuotation(quotationId);
 
         // Respond with 204 No Content
         res.status(204).end();
@@ -125,14 +127,14 @@ router.get('/company/:companyId', authenticateToken, async (req, res) => {
             return res.status(403).json({ error: 'Access denied' });
         }
 
-        const company = await Company.findByPk(req.AuthCompanyId);
+        const company = await getCompanyById(req.AuthCompanyId);
 
         if (!company) {
             return res.status(404).json({ error: 'Company not found' });
         }
 
         // Fetch all quotations for the company
-        const quotations = await Quotation.findAll({ where: { company_id: companyId } });
+        const quotations = await getQuotationsOfCompany(companyId);
         if (!quotations || quotations.length === 0) {
             return res.status(404).json({ error: `No quotations found for company: ${company.company_name} (${company.company_id})` });
         }

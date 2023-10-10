@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { Company } = require('../sequelize');
+
 const authenticateToken = require('./Authentication/tokenAuthentication');
+
+const { getCompanyById } = require('../services/companyService');
 
 router.get('/:companyId', authenticateToken, async (req, res) => {
     try {
@@ -13,7 +15,7 @@ router.get('/:companyId', authenticateToken, async (req, res) => {
         }
 
         // Fetch the company data
-        const company = await Company.findByPk(companyId);
+        const company = await getCompanyById(companyId);
         if (!company) {
             return res.status(404).json({ error: 'Company not found' });
         }

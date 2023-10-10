@@ -48,21 +48,21 @@ const Dashboard = () => {
                     <tr>
                         <th>Invoice ID</th>
                         <th>Date</th>
-                        <th>Amount</th>
                         <th>Relation</th>
                         <th>Description</th>
                         <th>Due date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    {invoices.map(invoice => (  
+                        <tr>
+                            <td>{invoice.invoice_id}</td>  
+                            <td>{invoice.creation_date}</td>  
+                            <td>{invoice.relation_id}</td>  
+                            <td>{invoice.invoice_description}</td>  
+                            <td>{invoice.due_date}</td>  
+                        </tr>
+                    ))}  
                 </tbody>
             </Table>
         }

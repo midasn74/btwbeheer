@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const authenticateToken = require('./Authentication/tokenAuthentication');
-
 const validateRelation = require('./Validation/relationValidation');
 const validateRelationPatch = require('./Validation/relationPatchValidation');
 
-const { Relation } = require('../sequelize');
-const { Company } = require('../sequelize');
+const { getRelationById, createRelation, alterRelation, deleteRelation, getRelationsOfCompany } = require('../services/relationService');
+const { getCompanyById } = require('../services/companyService');
 
 // Route to create a new relation
 router.post('/', [validateRelation, authenticateToken], async (req, res) => {
@@ -15,7 +14,7 @@ router.post('/', [validateRelation, authenticateToken], async (req, res) => {
         const { company_id, relation_name, relation_contact, relation_email, relation_phone, relation_address, relation_postal_code, relation_city, relation_country, relation_kvk_number, relation_vat_number, relation_iban, relation_salutation } = req.body;
     
         // Create a new relation
-        const relation = await Relation.create({ 
+        const relation = await createRelation({ 
             company_id,
             relation_name,
             relation_contact,
@@ -39,16 +38,19 @@ router.post('/', [validateRelation, authenticateToken], async (req, res) => {
 });
 
 // Route to patch a relation
-router.patch('/:relation_id', [validateRelationPatch, authenticateToken], async (req, res) => {
+router.patch('/:relationId', [validateRelationPatch, authenticateToken], async (req, res) => {
     try {
-        const { relation_id } = req.params;
+        const relationId = parseInt(req.params.relationId, 10);
 
         // Check if the relation exists
-        const relation = await Relation.findOne({ where: { relation_id } });
+        const relation = await getRelationById(relationId);
         if (!relation) return res.status(404).json({ error: 'Relation not found' });
 
         // Update the relation, only update changed parts
-        await relation.update(req.body);
+        Object.keys(req.body).forEach(key => {
+            relation[key] = req.body[key];
+        });
+        await alterRelation(relationId, relation);
 
         // Respond with the updated relation
         res.status(200).json({ relation });
@@ -63,7 +65,7 @@ router.delete('/:relationId', authenticateToken, async (req, res) => {
     try {
         const relationId = parseInt(req.params.relationId, 10);
 
-        const relation = await Relation.findByPk(relationId);
+        const relation = await getRelationById(relationId);
 
         if (!relation) {
             return res.status(404).json({ error: 'Relation not found' });
@@ -80,7 +82,7 @@ router.delete('/:relationId', authenticateToken, async (req, res) => {
         }
 
         // Delete the relation
-        await relation.destroy();
+        await deleteRelation(relationId);
 
         // Respond with 204 No Content
         res.status(204).end();
@@ -95,7 +97,7 @@ router.get('/:relationId', authenticateToken, async (req, res) => {
     try {
         const relationId = parseInt(req.params.relationId, 10);
 
-        const relation = await Relation.findByPk(relationId)
+        const relation = await getRelationById(relationId)
 
         if (!relation) {
             return res.status(404).json({ error: 'Relation not found' });
@@ -129,14 +131,14 @@ router.get('/company/:companyId', authenticateToken, async (req, res) => {
             return res.status(403).json({ error: 'Access denied' });
         }
 
-        const company = await Company.findByPk(req.AuthCompanyId);
+        const company = await getCompanyById(req.AuthCompanyId);
 
         if (!company) {
             return res.status(404).json({ error: 'Company not found' });
         }
 
         // Fetch all relations for the company
-        const relations = await Relation.findAll({ where: { company_id: companyId } });
+        const relations = await getRelationsOfCompany(companyId);
         if (!relations || relations.length === 0) {
             return res.status(404).json({ error: `No relations found for company: ${company.company_name} (${company.company_id})` });
         }

@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const authenticateToken = require('./Authentication/tokenAuthentication');
-
 const validateInvoice = require('./Validation/invoiceValidation');
 const validateInvoicePatch = require('./Validation/invoicePatchValidation');
 
-const { Invoice } = require('../sequelize');
-const { Company } = require('../sequelize');
+const { getInvoiceById, createInvoice, alterInvoice, deleteInvoice, getInvoicesOfCompany } = require('../services/invoiceService');
+const { getCompanyById } = require('../services/companyService');
 
 // Route to create a new invoice
 router.post('/', [validateInvoice, authenticateToken], async (req, res) => {
@@ -15,7 +14,7 @@ router.post('/', [validateInvoice, authenticateToken], async (req, res) => {
         const { company_id, relation_id, invoice_description, creation_date, due_date, payment_term_days } = req.body;
     
         // Create a new invoice
-        const invoice = await Invoice.create({ 
+        const invoice = await createInvoice({ 
             company_id,
             relation_id,
             invoice_description,
@@ -35,7 +34,7 @@ router.patch('/:invoiceId', [validateInvoicePatch, authenticateToken], async (re
     try {
         const invoiceId = parseInt(req.params.invoiceId, 10);
 
-        const invoice = await Invoice.findByPk(invoiceId);
+        const invoice = await getInvoiceById(invoiceId);
 
         if (!invoice) {
             return res.status(404).json({ error: 'Invoice not found' });
@@ -47,7 +46,11 @@ router.patch('/:invoiceId', [validateInvoicePatch, authenticateToken], async (re
         }
 
         // Patch the invoice, only update the fields that are included in the request body
-        await invoice.update(req.body);
+        Object.keys(req.body).forEach(key => {
+            invoice[key] = req.body[key];
+        });
+
+        await alterInvoice(invoiceId, invoice);
 
         // Respond with the updated invoice
         res.status(200).json({ invoice });
@@ -61,7 +64,7 @@ router.get('/:invoiceId', authenticateToken, async (req, res) => {
     try {
         const invoiceId = parseInt(req.params.invoiceId, 10);
 
-        const invoice = await Invoice.findByPk(invoiceId);
+        const invoice = await getInvoiceById(invoiceId);
 
         if (!invoice) {
             return res.status(404).json({ error: 'Invoice not found' });
@@ -89,7 +92,7 @@ router.delete('/:invoiceId', authenticateToken, async (req, res) => {
     try {
         const invoiceId = parseInt(req.params.invoiceId, 10);
 
-        const invoice = await Invoice.findByPk(invoiceId);
+        const invoice = await getInvoiceById(invoiceId);
 
         if (!invoice) {
             return res.status(404).json({ error: 'Invoice not found' });
@@ -106,7 +109,7 @@ router.delete('/:invoiceId', authenticateToken, async (req, res) => {
         }
 
         // Delete the invoice
-        await invoice.destroy();
+        await deleteInvoice(invoiceId);
 
         // Respond with 204 No Content
         res.status(204).end();
@@ -125,14 +128,14 @@ router.get('/company/:companyId', authenticateToken, async (req, res) => {
             return res.status(403).json({ error: 'Access denied' });
         }
 
-        const company = await Company.findByPk(req.AuthCompanyId);
+        const company = await getCompanyById(req.AuthCompanyId);
 
         if (!company) {
             return res.status(404).json({ error: 'Company not found' });
         }
 
         // Fetch all invoices for the company
-        const invoices = await Invoice.findAll({ where: { company_id: companyId } });
+        const invoices = await getInvoicesOfCompany(companyId);
         if (!invoices || invoices.length === 0) {
             return res.status(404).json({ error: `No invoices found for company: ${company.company_name} (${company.company_id})` });
         }

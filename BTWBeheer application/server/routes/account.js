@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { getCompanyById, getCompanyByLoginMail, createCompany, alterCompany } = require('../services/companyService');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const registrationValidation = require('./Validation/registrationValidation');
 const passwordValidation = require('./Validation/passwordValidation');
 const authenticateToken = require('./Authentication/tokenAuthentication');
+
+const { getCompanyById, getCompanyByLoginMail, createCompany, alterCompany } = require('../services/companyService');
 
 // Route to register a new company
 router.post('/register', registrationValidation, async (req, res) => {
