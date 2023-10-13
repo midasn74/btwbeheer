@@ -4,6 +4,8 @@ import fetchCompanyData from '../api/getCompany';
 import fetchInvoicesData from '../api/getInvoices';
 import fetchRelationsData from '../api/getRelations';
 
+import { parseDateToString } from '../helpers/dateParser'; 
+
 import FullNavbar from './FullNavbar';
 
 import { Alert, Table, Button, Container, Row, Col } from 'react-bootstrap';
@@ -64,10 +66,10 @@ const Dashboard = () => {
                         return (
                             <tr key={invoice.invoice_id}>
                                 <td>{invoice.invoice_id}</td>
-                                <td>{invoice.creation_date}</td>
+                                <td>{parseDateToString(invoice.creation_date)}</td>
                                 <td>{relatedRelation ? relatedRelation.relation_name : 'N/A'}</td>
                                 <td>{invoice.invoice_description}</td>
-                                <td>{invoice.due_date}</td>
+                                <td>{parseDateToString(invoice.due_date)}</td>
                             </tr>
                         );
                     })}
