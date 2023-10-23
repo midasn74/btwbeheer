@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
 
 import fetchCompanyData from '../api/getCompany';
 import fetchInvoicesData from '../api/getInvoices';
@@ -8,18 +9,43 @@ import { parseDateToString } from '../helpers/dateParser';
 
 import FullNavbar from './FullNavbar';
 
-import { Alert, Table, Button, Container, Row, Col } from 'react-bootstrap';
- 
-const Dashboard = () => {
-    const [company, setCompany] = useState(null); 
-    const [invoices, setInvoices] = useState(null); 
-    const [relations, setRelations] = useState(null);
+import { Alert, Button, Container, Row, Col } from 'react-bootstrap';
 
+const columns = [
+    { field: 'id', headerName: 'ID', sortable: false, width: 40, disableColumnMenu: true },
+    { field: 'creation_date_object', headerName: 'Date', width: 140, type: 'date', valueGetter: (params) => { return new Date(params.value); },},
+    { field: 'due_date_object', headerName: 'Due date', width: 140, type: 'date', valueGetter: (params) => { return new Date(params.value); },},
+    { field: 'relation_name', headerName: 'Relation', width: 180, },
+    { field: 'invoice_description', headerName: 'Description', width: 400, },
+];
+
+const Dashboard = () => {
+    const [company, setCompany] = useState(null);
+    const [invoices, setInvoices] = useState(null);
+    const [relations, setRelations] = useState(null);
+    
     useEffect(() => {
-        fetchCompanyData(setCompany);
-        fetchRelationsData(setRelations);
-        fetchInvoicesData(setInvoices);
-    }, []);
+      fetchCompanyData(setCompany);
+      fetchRelationsData(setRelations);
+      fetchInvoicesData(data => {
+        // Ensure that relations data is available
+        if (relations) {
+          // Modify the data here by renaming 'invoice_id' to 'id'
+          const modifiedData = data.map(item => ({
+            id: item.invoice_id,
+            relation_name: relations.find(relation => relation.relation_id === item.relation_id).relation_name,
+            creation_date_string: parseDateToString(item.creation_date),
+            due_date_string: parseDateToString(item.due_date),            
+            creation_date_object: item.creation_date,
+            due_date_object: item.due_date,
+            ...item
+          }));
+    
+          // Set the modified data in the state
+          setInvoices(modifiedData);
+        }
+      });
+    }, [relations]);
 
     return (
     <div>
@@ -48,33 +74,17 @@ const Dashboard = () => {
                 </p>
             </Alert>
         : 
-            <Table striped bordered hover variant="dark">
-                <thead>
-                    <tr>
-                        <th>Invoice ID</th>
-                        <th>Date</th>
-                        <th>Relation</th>
-                        <th>Description</th>
-                        <th>Due date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {invoices.map(invoice => {
-                        // Find the corresponding relation using relation_id
-                        const relatedRelation = relations.find(relation => relation.relation_id === invoice.relation_id);
-
-                        return (
-                            <tr key={invoice.invoice_id}>
-                                <td>{invoice.invoice_id}</td>
-                                <td>{parseDateToString(invoice.creation_date)}</td>
-                                <td>{relatedRelation ? relatedRelation.relation_name : 'N/A'}</td>
-                                <td>{invoice.invoice_description}</td>
-                                <td>{parseDateToString(invoice.due_date)}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </Table>
+            <div style={{  background: '#bbb', borderRadius: '7px', border: '3px solid #fff' }}>
+                <DataGrid
+                    rows={invoices}
+                    columns={columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 10 },
+                        },
+                    }}
+                />
+            </div>
         }
     </div>
     );
