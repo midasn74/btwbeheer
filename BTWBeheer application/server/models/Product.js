@@ -3,13 +3,13 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     const Product = sequelize.define('products', { 
         product_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
         },
         company_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
                 model: 'companies',
@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
             },
         },
         invoice_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: true,
             references: {
                 model: 'invoices',
@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
             },
         },
         quotation_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: true,
             references: {
                 model: 'quotations',

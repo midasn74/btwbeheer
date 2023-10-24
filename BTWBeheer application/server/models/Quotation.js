@@ -3,13 +3,13 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     const Quotation = sequelize.define('quotations', { 
         quotation_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
         },
         company_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
                 model: 'companies',
@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
             },
         },
         relation_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
                 model: 'relations',

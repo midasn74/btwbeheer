@@ -3,13 +3,13 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     const Relation = sequelize.define('relations', { 
         relation_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
         },
         company_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
                 model: 'companies',

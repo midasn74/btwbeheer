@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, gridClasses } from '@mui/x-data-grid';
 
 import fetchCompanyData from '../api/getCompany';
 import fetchInvoicesData from '../api/getInvoices';
 import fetchRelationsData from '../api/getRelations';
+
+import { deleteButton, editButton } from './buttons';
 
 import { parseDateToString } from '../helpers/dateParser'; 
 
@@ -16,7 +18,11 @@ const columns = [
     { field: 'creation_date_object', headerName: 'Date', width: 140, type: 'date', valueGetter: (params) => { return new Date(params.value); },},
     { field: 'due_date_object', headerName: 'Due date', width: 140, type: 'date', valueGetter: (params) => { return new Date(params.value); },},
     { field: 'relation_name', headerName: 'Relation', width: 180, },
-    { field: 'invoice_description', headerName: 'Description', width: 400, },
+    { field: 'invoice_description', headerName: 'Description', width: 320, },
+    // Edit button
+    { field: 'edit', headerName: '', sortable: false, disableColumnMenu: true, renderCell: editButton },
+    // Delete button
+    { field: 'delete', headerName: '', sortable: false, disableColumnMenu: true, renderCell: deleteButton },
 ];
 
 const Dashboard = () => {
@@ -76,6 +82,14 @@ const Dashboard = () => {
         : 
             <div style={{  background: '#bbb', borderRadius: '7px', border: '3px solid #fff' }}>
                 <DataGrid
+                    sx={{
+                        [`& .${gridClasses.columnHeader}, & .${gridClasses.cell}`]: {
+                        outline: 'transparent',
+                        },
+                        [`& .${gridClasses.columnHeader}:focus-within, & .${gridClasses.cell}:focus-within`]: {
+                        outline: 'none',
+                        },
+                    }}
                     rows={invoices}
                     columns={columns}
                     initialState={{
