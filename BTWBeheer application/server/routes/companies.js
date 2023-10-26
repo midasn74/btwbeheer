@@ -7,7 +7,7 @@ const { getCompanyById } = require('../services/companyService');
 
 router.get('/:companyId', authenticateToken, async (req, res) => {
     try {
-        const companyId = parseInt(req.params.companyId, 10);
+        const companyId = req.params.companyId;
 
         // Check if the authenticated company has permission to access the requested company's data
         if (req.AuthCompanyId !== companyId) {

@@ -12,7 +12,7 @@ const { getCompanyById, getCompanyByLoginMail, createCompany, alterCompany } = r
 // Route to register a new company
 router.post('/register', registrationValidation, async (req, res) => {
     try {
-        const { login_mail, password, company_name, contact_mail, contact_phone_number, bank_number, kvk_number, vat_number, vat_declaration_interval, address, postal_code, city, country, default_payment_term_days, default_quotation_validity_days } = req.body;
+        const { login_mail, password, company_name, contact_mail, contact_phone_number, bank_number, kvk_number, vat_number, vat_declaration_interval, address, postal_code, city, country, default_payment_term_days, default_quotation_validity_days, company_logo } = req.body;
     
         // Hash the password
         const saltRounds = 12;
@@ -34,7 +34,8 @@ router.post('/register', registrationValidation, async (req, res) => {
             city, 
             country, 
             default_payment_term_days, 
-            default_quotation_validity_days 
+            default_quotation_validity_days,
+            company_logo
         });
     
         res.status(200).json({ company });

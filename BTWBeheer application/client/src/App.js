@@ -5,18 +5,23 @@ import ProtectedRoute from './routes/ProtectedRoute';
 
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
+import Register from './components/Register';
 import Logout from './components/Logout';
 import Invoicing from './components/Invoicing';
+import Quoting from './components/Quoting';
 import Relations from './components/Relations';
 
 function App() {
   return (
     <Router>
-        <div className='bg-dark text-light pt-5' style={{ height: '100vh' }}>
+        <div className='bg-dark text-light pt-5' style={{ minHeight: '100vh' }}>
           <div className='container'>
             <Routes>
                 {/* Public route */}
                 <Route path="/login" element={<Login />} />
+
+                {/* Public route */}
+                <Route path="/register" element={<Register />} />
 
                 {/* Public route */}
                 <Route path="/logout" element={<Logout />} />
@@ -37,6 +42,16 @@ function App() {
                     element = {
                         <ProtectedRoute>
                             <Invoicing />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Protected route */}
+                <Route
+                    path="/Quoting"
+                    element = {
+                        <ProtectedRoute>
+                            <Quoting />
                         </ProtectedRoute>
                     }
                 />

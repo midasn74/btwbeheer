@@ -27,7 +27,8 @@ async function createCompany({
         city, 
         country, 
         default_payment_term_days, 
-        default_quotation_validity_days 
+        default_quotation_validity_days,
+        company_logo
     }) 
     {
     const company = await Company.create({ 
@@ -44,8 +45,9 @@ async function createCompany({
         postal_code, 
         city, 
         country, 
+        company_logo,
         default_payment_term_days, 
-        default_quotation_validity_days 
+        default_quotation_validity_days,
     });
 
     return company;

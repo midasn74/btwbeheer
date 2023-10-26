@@ -12,7 +12,11 @@ const { getCompanyById } = require('../services/companyService');
 router.post('/', [validateRelation, authenticateToken], async (req, res) => {
     try {
         const { company_id, relation_name, relation_contact, relation_email, relation_phone, relation_address, relation_postal_code, relation_city, relation_country, relation_kvk_number, relation_vat_number, relation_iban, relation_salutation } = req.body;
-    
+
+        if (req.AuthCompanyId !== company_id) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+
         // Create a new relation
         const relation = await createRelation({ 
             company_id,
@@ -40,7 +44,7 @@ router.post('/', [validateRelation, authenticateToken], async (req, res) => {
 // Route to patch a relation
 router.patch('/:relationId', [validateRelationPatch, authenticateToken], async (req, res) => {
     try {
-        const relationId = parseInt(req.params.relationId, 10);
+        const relationId = req.params.relationId;
 
         // Check if the relation exists
         const relation = await getRelationById(relationId);
@@ -63,7 +67,7 @@ router.patch('/:relationId', [validateRelationPatch, authenticateToken], async (
 // Route to delete a relation
 router.delete('/:relationId', authenticateToken, async (req, res) => {
     try {
-        const relationId = parseInt(req.params.relationId, 10);
+        const relationId = req.params.relationId;
 
         const relation = await getRelationById(relationId);
 
@@ -95,7 +99,7 @@ router.delete('/:relationId', authenticateToken, async (req, res) => {
 // Route to get a relation
 router.get('/:relationId', authenticateToken, async (req, res) => {
     try {
-        const relationId = parseInt(req.params.relationId, 10);
+        const relationId = req.params.relationId;
 
         const relation = await getRelationById(relationId)
 
@@ -124,7 +128,7 @@ router.get('/:relationId', authenticateToken, async (req, res) => {
 // Route to get all relations
 router.get('/company/:companyId', authenticateToken, async (req, res) => {
     try {
-        const companyId = parseInt(req.params.companyId, 10);
+        const companyId = req.params.companyId;
 
         // Check if the authenticated company has permission to access the requested company's data
         if (req.AuthCompanyId !== companyId) {

@@ -1,6 +1,8 @@
 const { Company } = require('../../sequelize');
 const { body, validationResult } = require('express-validator');
 
+const isBase64 = value => /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/.test(value);
+
 const validateCompany = [
     // Validation rules for the request body
     body('login_mail')
@@ -16,8 +18,7 @@ const validateCompany = [
     body('password')
         .notEmpty().withMessage('A password is required')
         .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
-            .withMessage('Password must contain at least one uppercase letter, one lowercase letter and one number'),
+        .isStrongPassword().withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number and one symbol'),
 
     body('company_name')
         .notEmpty().withMessage('A company name is required'),
@@ -67,6 +68,17 @@ const validateCompany = [
     body('default_quotation_validity_days')
         .notEmpty().withMessage('A default quotation validity term is required')
         .isInt({ min: 1, max: 365 }).withMessage('A valid default quotation validity term is required (1-365) days'),
+
+    body('company_logo')
+        .notEmpty().withMessage('A company logo is required'),
+
+    body('company_logo').custom((value) => {
+        value = value.split(',')[1];
+        if (!isBase64(value)) {
+            throw new Error('Company logo must be a base64 encoded image');
+        }
+        return true;
+    }),
     
     // After defining validation rules, handle the route logic
     (req, res, next) => {

@@ -3,11 +3,11 @@ const { body, validationResult } = require('express-validator');
 const validateInvoice = [
     body('company_id')
         .notEmpty().withMessage('A company is required')
-        .isNumeric().withMessage('Company id must be a number'),
+        .isUUID().withMessage('Company id must be a uuid'),
 
     body('relation_id')
         .notEmpty().withMessage('A relation is required')
-        .isNumeric().withMessage('Relation id must be a number'),
+        .isUUID().withMessage('Relation id must be a uuid'),
 
     body('invoice_description')
         .notEmpty().withMessage('An invoice description is required')

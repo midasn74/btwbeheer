@@ -32,7 +32,7 @@ router.post('/', [validateInvoice, authenticateToken], async (req, res) => {
 
 router.patch('/:invoiceId', [validateInvoicePatch, authenticateToken], async (req, res) => {
     try {
-        const invoiceId = parseInt(req.params.invoiceId, 10);
+        const invoiceId = req.params.invoiceId;
 
         const invoice = await getInvoiceById(invoiceId);
 
@@ -62,7 +62,7 @@ router.patch('/:invoiceId', [validateInvoicePatch, authenticateToken], async (re
 
 router.get('/:invoiceId', authenticateToken, async (req, res) => {
     try {
-        const invoiceId = parseInt(req.params.invoiceId, 10);
+        const invoiceId = req.params.invoiceId;
 
         const invoice = await getInvoiceById(invoiceId);
 
@@ -90,7 +90,7 @@ router.get('/:invoiceId', authenticateToken, async (req, res) => {
 
 router.delete('/:invoiceId', authenticateToken, async (req, res) => {
     try {
-        const invoiceId = parseInt(req.params.invoiceId, 10);
+        const invoiceId = req.params.invoiceId;
 
         const invoice = await getInvoiceById(invoiceId);
 
@@ -121,7 +121,7 @@ router.delete('/:invoiceId', authenticateToken, async (req, res) => {
 
 router.get('/company/:companyId', authenticateToken, async (req, res) => {
     try {
-        const companyId = parseInt(req.params.companyId, 10);
+        const companyId = req.params.companyId;
 
         // Check if the authenticated company has permission to access the requested company's data
         if (req.AuthCompanyId !== companyId) {

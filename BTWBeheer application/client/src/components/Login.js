@@ -70,9 +70,16 @@ const Login = () => {
                     }
 
                     <Button variant="primary" style={{ width: "100%" }} type="submit">Submit</Button>
+                    <div className='text-center' style={{ marginTop: '10px' }}>
+                        <a href="/register" style={{ textDecoration: 'none' }}>
+                        Create an account
+                        </a>
+                    </div>
                 </Form>
             </Card.Body>
         </Card>
+
+        <br />
     </>
   );
 };

@@ -3,7 +3,7 @@ const { body, validationResult } = require('express-validator');
 const validateRelation = [
     body('company_id')
         .notEmpty().withMessage('A company is required')
-        .isNumeric().withMessage('Company id must be a number'),
+        .isUUID().withMessage('Company id must be a uuid'),
 
     body('relation_name')
         .notEmpty().withMessage('A relation name is required')
