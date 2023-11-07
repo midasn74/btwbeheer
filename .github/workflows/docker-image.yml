@@ -18,7 +18,8 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          cd express-app
+          cd "BTWBeheer application"
+          cd server
           docker build -t midasnies/btwbeheer-express-app:${{ github.sha }} .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker push midasnies/btwbeheer-express-app:${{ github.sha }}
@@ -28,7 +29,8 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          cd react-app
+          cd "BTWBeheer application"
+          cd client
           docker build -t midasnies/btwbeheer-react-app:${{ github.sha }} .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker push midasnies/react-app:${{ github.sha }}
