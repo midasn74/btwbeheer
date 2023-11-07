@@ -33,4 +33,4 @@ jobs:
           cd client
           docker build -t midasnies/btwbeheer-react-app:${{ github.sha }} .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker push midasnies/react-app:${{ github.sha }}
+          docker push midasnies/btwbeheer-react-app:${{ github.sha }}
