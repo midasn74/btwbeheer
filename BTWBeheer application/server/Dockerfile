@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:18
+FROM node:14
 
 # Set the working directory in the container
 WORKDIR /app
@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install
 
+# Rebuild the bcrypt module within the container
+RUN npm rebuild bcrypt --build-from-source
+
 # Copy the rest of the application code to the container
 COPY . .
 
@@ -17,4 +20,4 @@ COPY . .
 EXPOSE 5000
 
 # Command to run the Express app
-CMD [ "node", "app.js" ]
+CMD [ "npm", "start" ]
