@@ -31,6 +31,16 @@ jobs:
       working-directory: ./BTWBeheer application/server  # Specify the folder path
       run: npm install
 
+    - name: Use Environment Variables
+      run: |
+        echo $DB_HOST
+        echo $PORT
+        echo $DB_USER
+        echo $DB_PASSWORD
+        echo $DB_DATABASE
+        echo $SECRET_KEY
+        echo $JWT_EXPIRATION
+
     - name: Run Unit Tests
       working-directory: ./BTWBeheer application/server  # Specify the folder path
       run: npm run test:unit  # Adjust the script name as needed
