@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const authenticateToken = require('../routes/Authentication/tokenAuthentication');
+const authenticateToken = require('../../routes/Authentication/tokenAuthentication');
 
 const dotenv = require('dotenv');
 dotenv.config();

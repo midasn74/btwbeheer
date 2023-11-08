@@ -1,0 +1,1 @@
+docker run --name BTWBeheer -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=btwbeheer -d -p 3306:3306 mysql:latest
