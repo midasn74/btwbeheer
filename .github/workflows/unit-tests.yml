@@ -1,0 +1,25 @@
+name: Run Unit Tests
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to trigger tests on
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 18  # Change this to the Node.js version you're using
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Unit Tests
+      run: npm run test:unit  # Adjust the script name as needed
