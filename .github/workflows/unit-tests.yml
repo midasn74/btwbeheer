@@ -19,7 +19,9 @@ jobs:
         node-version: 18  # Change this to the Node.js version you're using
 
     - name: Install dependencies
+      working-directory: ./BTWBeheer application/server  # Specify the folder path
       run: npm install
 
     - name: Run Unit Tests
+      working-directory: ./BTWBeheer application/server  # Specify the folder path
       run: npm run test:unit  # Adjust the script name as needed
