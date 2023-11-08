@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_HOST: ${{ env.Database.TEST_DB_HOST }}
-      PORT: ${{ env.Database.EXPRESS_PORT }}
-      DB_USER: ${{ env.Database.TEST_DB_USER }}
-      DB_PASSWORD: ${{ env.Database.TEST_DB_PASSWORD }}
-      DB_DATABASE: ${{ env.Database.TEST_DB_NAME }}
-      SECRET_KEY: ${{ env.Database.TEST_SECRET_KEY }}
-      JWT_EXPIRATION: ${{ env.Database.JWT_EXPIRATION }}
+      DB_HOST: ${{ secrets.TEST_DB_HOST }}
+      PORT: ${{ secrets.EXPRESS_PORT }}
+      DB_USER: ${{ secrets.TEST_DB_USER }}
+      DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+      DB_DATABASE: ${{ secrets.TEST_DB_NAME }}
+      SECRET_KEY: ${{ secrets.TEST_SECRET_KEY }}
+      JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
 
     steps:
     - name: Checkout code
