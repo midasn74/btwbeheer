@@ -3,7 +3,7 @@ name: Run Unit Tests
 on:
   push:
     branches:
-      - main  # Change this to the branch you want to trigger tests on
+      - master  # Change this to the branch you want to trigger tests on
 
 jobs:
   build:
