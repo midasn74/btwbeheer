@@ -35,6 +35,46 @@ const Invoice = defineInvoice(sequelize);
 const Quotation = defineQuotation(sequelize);
 const Product = defineProduct(sequelize);
 
+// Relation has a relation with Company
+Relation.belongsTo(Company, {
+    foreignKey: 'company_id',
+    onDelete: 'CASCADE',
+});
+
+// Invoice has a relation with Company and Relation
+Invoice.belongsTo(Company, {
+    foreignKey: 'company_id',
+    onDelete: 'CASCADE',
+});
+Invoice.belongsTo(Relation, {
+    foreignKey: 'relation_id',
+    onDelete: 'CASCADE',
+});
+
+// Quotation has a relation with Company and Relation
+Quotation.belongsTo(Company, {
+    foreignKey: 'company_id',
+    onDelete: 'CASCADE',
+});
+Quotation.belongsTo(Relation, {
+    foreignKey: 'relation_id',
+    onDelete: 'CASCADE',
+});
+
+// Product has a relation with Company, Invoice and Quotation
+Product.belongsTo(Company, {
+    foreignKey: 'company_id',
+    onDelete: 'CASCADE',
+});
+Product.belongsTo(Invoice, {
+    foreignKey: 'invoice_id',
+    onDelete: 'CASCADE',
+});
+Product.belongsTo(Quotation, {
+    foreignKey: 'quotation_id',
+    onDelete: 'CASCADE',
+});
+
 sequelize.sync()
 .then(() => {
     console.log('All models were synchronized successfully.');

@@ -54,14 +54,13 @@ const Relations = () => {
         <div>
             <FullNavbar company={company}/>
 
-            {/*Make a relation creator*/}
             <Container>
                 <Row className="align-items-center">
                     <Col>
                         <h1>Relations</h1>
                     </Col>
                     <Col className="d-flex justify-content-end">
-                        <Button variant="success">+ Relation</Button>
+                        <Button variant="success" href='CreateRelation' target='_self'>+ Relation</Button>
                     </Col>
                 </Row>
             </Container>

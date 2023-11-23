@@ -64,11 +64,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    document.querySelector('#main-form-submit-button').disabled = true;
+
     console.log('Register form submitted:', formData);
 
     // check if passwords match
     if (formData.password !== formData.confirm_password) {
         setErrorMessage('Passwords do not match');
+        document.querySelector('#main-form-submit-button').disabled = false;
         return;
     }
 
@@ -89,6 +92,7 @@ const Login = () => {
     } catch (error) {
         console.error('Register failed:', error);
         setErrorMessage(error.response.data.errors[0].msg);
+        document.querySelector('#main-form-submit-button').disabled = false;
     }
   };
 
@@ -204,7 +208,7 @@ const Login = () => {
                         null
                     }
 
-                    <Button variant="primary" style={{ width: "100%" }} type="submit">Submit</Button>
+                    <Button variant="primary" style={{ width: "100%" }} type="submit" id="main-form-submit-button">Submit</Button>
                     <div className='text-center' style={{ marginTop: '10px' }}>
                         <a href="/login" style={{ textDecoration: 'none' }}>
                         Already have an account?

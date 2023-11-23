@@ -10,6 +10,7 @@ import Logout from './components/Logout';
 import Invoicing from './components/Invoicing';
 import Quoting from './components/Quoting';
 import Relations from './components/Relations';
+import CreateRelation from './components/CreateRelation';
 
 function App() {
   return (
@@ -62,6 +63,16 @@ function App() {
                     element = {
                         <ProtectedRoute>
                             <Relations />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Protected route */}
+                <Route
+                    path="/CreateRelation"
+                    element = {
+                        <ProtectedRoute>
+                            <CreateRelation />
                         </ProtectedRoute>
                     }
                 />
