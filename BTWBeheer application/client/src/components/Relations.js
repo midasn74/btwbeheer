@@ -25,7 +25,7 @@ const columns = [
     { field: 'relation_iban', headerName: 'IBAN', width: 190, },
     { field: 'relation_salutation', headerName: 'Salutation', width: 100, },
     // Edit button
-    { field: 'edit', headerName: '', sortable: false, disableColumnMenu: true, renderCell: editButton },
+    //{ field: 'edit', headerName: '', sortable: false, disableColumnMenu: true, renderCell: editButton },
     // Delete button
     { field: 'delete', headerName: '', sortable: false, disableColumnMenu: true, renderCell: deleteButton },
 ];

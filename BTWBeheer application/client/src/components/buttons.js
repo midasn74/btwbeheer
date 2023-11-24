@@ -2,6 +2,10 @@ import { Button } from 'react-bootstrap';
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { GeneratePDF } from '../helpers/PDFGenerator';
 
+import axios from 'axios';
+
+import { getCompanyId, getJWT } from '../utils/auth';
+
 export const editButton = (params) => {
     return (
         <strong>
@@ -30,8 +34,33 @@ export const deleteButton = (params) => {
                 size="small"
                 style={{ marginRight: 8 }}
                 onClick={() => {
-                    //params.row.id is here the id of the object
-                    console.log(params.row);
+                    // params.row.id is here the id of the object
+
+                    // Ask for confirmation
+                    if (!window.confirm(`Are you sure you want to delete this relation: "${params.row.relation_name}"?\nThis action cannot be undone.`)) {
+                        return;
+                    }
+
+                    console.log("Deleting: ", params.row);
+
+                    try {
+                        axios.delete(`${process.env.REACT_APP_API_URL}/relations/${params.row.id}`, {
+                            headers: {
+                                'Authorization': getJWT()
+                            }
+                        }).then((response) => {
+                        
+                            if (response.status !== 200) {
+                                throw new Error('Relation deletion failed');
+                            } else {
+                                console.log('Relation deletion successful:', response.data);
+                            }
+                        });
+                
+                        window.location.reload();
+                    } catch (error) {
+                        console.error('deletion failed:', error);
+                    }
                 }}
             >
                 Delete
