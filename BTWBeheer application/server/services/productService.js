@@ -80,4 +80,4 @@ async function getProductsOfQuotation(quotationId) {
     return products;
 }
 
-module.exports = { getProductById, createProduct, alterProduct, deleteProduct, getProductsOfInvoice, getProductsOfInvoice, getProductsOfQuotation };
+module.exports = { getProductById, createProduct, alterProduct, deleteProduct, getProductsOfInvoice, getProductsOfQuotation };
