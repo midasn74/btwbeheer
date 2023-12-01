@@ -1,4 +1,4 @@
-name: CI Workflow
+name: E2E tests
 
 on:
   push:
@@ -55,4 +55,4 @@ jobs:
 
       - name: Run Cypress Tests
         working-directory: "BTWBeheer application/client"
-        run: npm run cypress:run  # Replace with your Cypress test script
+        run: npx cypress run  # Replace with your Cypress test script
