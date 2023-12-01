@@ -32,27 +32,27 @@ jobs:
           node-version: '14'
 
       - name: Install Dependencies - Backend
-        working-directory: ./server
+        working-directory: server
         run: npm install
 
       - name: Start Express Server
-        working-directory: ./server
+        working-directory: server
         run: npm start &
 
       - name: Wait for Backend to Start
         run: sleep 10  # Adjust the time as necessary for your backend to start
 
       - name: Install Dependencies - Frontend
-        working-directory: ./client
+        working-directory: client
         run: npm install
 
       - name: Start React Server
-        working-directory: ./client
+        working-directory: client
         run: npm start &
 
       - name: Wait for Frontend to Start
         run: sleep 10  # Adjust the time as necessary for your frontend to start
 
       - name: Run Cypress Tests
-        working-directory: ./client
+        working-directory: client
         run: npm run cypress:run  # Replace with your Cypress test script
