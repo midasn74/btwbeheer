@@ -1,0 +1,58 @@
+name: E2E tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DB_HOST: ${{ secrets.TEST_DB_HOST }}
+      PORT: ${{ secrets.EXPRESS_PORT }}
+      DB_USER: ${{ secrets.TEST_DB_USER }}
+      DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+      DB_DATABASE: ${{ secrets.TEST_DB_NAME }}
+      SECRET_KEY: ${{ secrets.TEST_SECRET_KEY }}
+      JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
+      REACT_APP_API_URL: http://localhost:${{ secrets.EXPRESS_PORT }}/api
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Node.js version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies - Backend
+        working-directory: "BTWBeheer application/server"
+        run: npm install
+
+      - name: Start Express Server
+        working-directory: "BTWBeheer application/server"
+        run: npm start &
+
+      - name: Wait for Backend to Start
+        run: sleep 10  # Adjust the time as necessary for your backend to start
+
+      - name: Install Dependencies - Frontend
+        working-directory: "BTWBeheer application/client"
+        run: npm install
+
+      - name: Start React Server
+        working-directory: "BTWBeheer application/client"
+        run: npm start &
+
+      - name: Wait for Frontend to Start
+        run: sleep 10  # Adjust the time as necessary for your frontend to start
+
+      - name: Run Cypress Tests
+        working-directory: "BTWBeheer application/client"
+        run: npx cypress run  # Replace with your Cypress test script
