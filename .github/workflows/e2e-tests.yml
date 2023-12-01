@@ -20,7 +20,7 @@ jobs:
       DB_DATABASE: ${{ secrets.TEST_DB_NAME }}
       SECRET_KEY: ${{ secrets.TEST_SECRET_KEY }}
       JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
-      REACT_APP_API_URL: http://host:${{ secrets.EXPRESS_PORT }}/api
+      REACT_APP_API_URL: http://localhost:${{ secrets.EXPRESS_PORT }}/api
 
     steps:
       - name: Checkout Repository
