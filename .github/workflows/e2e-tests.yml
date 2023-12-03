@@ -14,7 +14,7 @@ jobs:
 
     env:
       DB_HOST: ${{ secrets.TEST_DB_HOST }}
-      PORT: ${{ secrets.EXPRESS_PORT }}
+      EXPRESS_PORT: ${{ secrets.EXPRESS_PORT }}
       DB_USER: ${{ secrets.TEST_DB_USER }}
       DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
       DB_DATABASE: ${{ secrets.TEST_DB_NAME }}
