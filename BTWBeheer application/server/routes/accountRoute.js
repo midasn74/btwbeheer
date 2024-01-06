@@ -1,3 +1,141 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Account
+ *   description: Company authentication and management
+ * /account/register:
+ *   post:
+ *     summary: Register a new company
+ *     tags: [Account]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CompanyRegistration'
+ *     responses:
+ *       200:
+ *         description: Company registration successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Company'
+ *       400:
+ *         description: Bad request, validation errors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ *
+ * /account/login:
+ *   post:
+ *     summary: Login a company
+ *     tags: [Account]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginCredentials'
+ *     responses:
+ *       200:
+ *         description: Company login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       401:
+ *         description: Invalid login credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ *
+ * /account/change-password:
+ *   post:
+ *     summary: Change company password
+ *     tags: [Account]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PasswordChange'
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Company'
+ *       400:
+ *         description: Bad request, validation errors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationError'
+ *       401:
+ *         description: Invalid old password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerError'
+ *
+ * components:
+ *   schemas:
+ *     CompanyRegistration:
+ *       type: object
+ *       properties:
+ *         login_mail:
+ *           type: string
+ *         password:
+ *           type: string
+ *         # Define other properties for company registration
+ *
+ *     LoginCredentials:
+ *       type: object
+ *       properties:
+ *         login_mail:
+ *           type: string
+ *         password:
+ *           type: string
+ *
+ *     PasswordChange:
+ *       type: object
+ *       properties:
+ *         old_password:
+ *           type: string
+ *         new_password:
+ *           type: string
+ *
+ *     Company:
+ *       type: object
+ *       properties:
+ *         # Define properties for the company object
+ *
+ */
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');

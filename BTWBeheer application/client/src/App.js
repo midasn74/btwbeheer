@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './routes/ProtectedRoute';
 
 import Dashboard from './components/Dashboard';
+import Account from './components/Account';
 import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
@@ -33,6 +34,16 @@ function App() {
                     element = {
                         <ProtectedRoute>
                             <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Protected route */}
+                <Route
+                    path="/Account"
+                    element = {
+                        <ProtectedRoute>
+                            <Account />
                         </ProtectedRoute>
                     }
                 />

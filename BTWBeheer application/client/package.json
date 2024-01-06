@@ -36,7 +36,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "e2e": "npm-run-all --parallel start cypress:open",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
