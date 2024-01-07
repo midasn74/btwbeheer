@@ -4,8 +4,7 @@ const validatePassword = [
     body('new_password')
         .notEmpty().withMessage('A new password is required')
         .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
-            .withMessage('Password must contain at least one uppercase letter, one lowercase letter and one number'),
+        .isStrongPassword().withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number and one symbol'),
 
     // After defining validation rules, handle the route logic
     (req, res, next) => {

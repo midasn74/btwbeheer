@@ -59,14 +59,13 @@ const Invoicing = () => {
         <div>
             <FullNavbar company={company}/>
 
-            {/*Make a invoice creator*/}
             <Container>
                 <Row className="align-items-center">
                     <Col>
-                        <h1>Invoices</h1>
+                        <h1>Relations</h1>
                     </Col>
                     <Col className="d-flex justify-content-end">
-                        <Button variant="success">+ Invoice</Button>
+                        <Button variant="success" href='CreateInvoice' target='_self'>+ Invoice</Button>
                     </Col>
                 </Row>
             </Container>

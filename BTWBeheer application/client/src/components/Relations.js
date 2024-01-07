@@ -4,7 +4,7 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import fetchCompanyData from '../api/getCompany';
 import fetchRelationsData from '../api/getRelations';
 
-import { deleteButton, editButton } from './buttons';
+import { deleteButton } from './buttons';
 
 import FullNavbar from './FullNavbar';
 

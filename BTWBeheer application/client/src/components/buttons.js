@@ -97,7 +97,6 @@ export const EditDeleteDownload = (params) => {
     return (
         //all buttons
         <div>
-            {editButton(params)}
             {deleteButton(params)}
             {downloadButton(params)}
         </div>

@@ -12,6 +12,7 @@ import Invoicing from './components/Invoicing';
 import Quoting from './components/Quoting';
 import Relations from './components/Relations';
 import CreateRelation from './components/CreateRelation';
+import CreateInvoice from './components/CreateInvoice';
 
 function App() {
   return (
@@ -84,6 +85,16 @@ function App() {
                     element = {
                         <ProtectedRoute>
                             <CreateRelation />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Protected route */}
+                <Route
+                    path="/CreateInvoice"
+                    element = {
+                        <ProtectedRoute>
+                            <CreateInvoice />
                         </ProtectedRoute>
                     }
                 />
