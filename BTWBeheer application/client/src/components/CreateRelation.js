@@ -14,6 +14,10 @@ const InfoHover = ({ message }) => (
     </OverlayTrigger>
 );
 
+const RequiredAsterisks = (
+    <element class="text-danger">*</element>
+)
+
 const CreateRelation = () => {
   const [formData, setFormData] = useState({
     company_id: getCompanyId(),
@@ -80,42 +84,42 @@ const CreateRelation = () => {
 
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formName">
-                        <Form.Label>Relation name</Form.Label>
+                        <Form.Label>Relation name{RequiredAsterisks}</Form.Label>
                         <Form.Control required type="text" name="relation_name" value={formData.relation_name} onChange={handleChange} placeholder="Company inc." />
                     </Form.Group>
 
                     <Form.Label><b>Relation contact information</b></Form.Label>
 
                     <Form.Group className="mb-3" controlId="formContact">
-                        <Form.Label>Relation contact name</Form.Label>
+                        <Form.Label>Relation contact name{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_contact" value={formData.relation_contact} onChange={handleChange} placeholder="John Doe" />
 
-                        <Form.Label>Relation salutation</Form.Label>
+                        <Form.Label>Relation salutation{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_salutation" value={formData.relation_salutation} onChange={handleChange} placeholder="e.g. mrs. or mr." />
 
-                        <Form.Label>Relation contact email</Form.Label>
+                        <Form.Label>Relation contact email{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_email" value={formData.relation_email} onChange={handleChange} placeholder="johndoe@companyinc.com" />
                         
-                        <Form.Label>Relation contact phone number</Form.Label>
+                        <Form.Label>Relation contact phone number{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_phone" value={formData.relation_phone} onChange={handleChange} placeholder="+316123456789" />
                         
-                        <Form.Label>Relation address</Form.Label>
+                        <Form.Label>Relation address{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_address" value={formData.relation_address} onChange={handleChange} placeholder="Somestreet 19b" />
                         
-                        <Form.Label>Relation postal code</Form.Label>
+                        <Form.Label>Relation postal code{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_postal_code" value={formData.relation_postal_code} onChange={handleChange} placeholder="1234 AB" />
 
-                        <Form.Label>Relation city</Form.Label>
+                        <Form.Label>Relation city{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_city" value={formData.relation_city} onChange={handleChange} placeholder="Amsterdam" />
 
-                        <Form.Label>Relation country</Form.Label>
+                        <Form.Label>Relation country{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_country" value={formData.relation_country} onChange={handleChange} placeholder="Netherlands" />
                     </Form.Group>
@@ -123,15 +127,15 @@ const CreateRelation = () => {
                     <Form.Label><b>Relation details</b></Form.Label>
 
                     <Form.Group className="mb-3" controlId="formDetails">
-                        <Form.Label>Relation KVK number</Form.Label>
+                        <Form.Label>Relation KVK number{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_kvk_number" value={formData.relation_kvk_number} onChange={handleChange} placeholder="123456789" />
                     
-                        <Form.Label>Relation VAT number</Form.Label>
+                        <Form.Label>Relation VAT number{RequiredAsterisks}</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
                         <Form.Control required type="text" name="relation_vat_number" value={formData.relation_vat_number} onChange={handleChange} placeholder="NL123456789B12" />
 
-                        <Form.Label>Relation IBAN number</Form.Label>
+                        <Form.Label>Relation IBAN number{RequiredAsterisks}</Form.Label>
                         <Form.Control required type="text" name="relation_iban" value={formData.relation_iban} onChange={handleChange} placeholder="NL12ABCD123456789" />
                     </Form.Group>
 

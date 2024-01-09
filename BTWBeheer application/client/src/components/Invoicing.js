@@ -62,7 +62,7 @@ const Invoicing = () => {
             <Container>
                 <Row className="align-items-center">
                     <Col>
-                        <h1>Relations</h1>
+                        <h1>Invoices</h1>
                     </Col>
                     <Col className="d-flex justify-content-end">
                         <Button variant="success" href='CreateInvoice' target='_self'>+ Invoice</Button>
