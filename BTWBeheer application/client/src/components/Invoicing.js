@@ -27,16 +27,32 @@ const Invoicing = () => {
     const [company, setCompany] = useState(null);
     const [invoices, setInvoices] = useState(null);
     const [relations, setRelations] = useState(null);
-    
+    const [dataLoaded, setDataLoaded] = useState(false);
+  
+    const initialCompany = useRef(company);
+    const initialRelations = useRef(relations);
+  
     useEffect(() => {
+      // Fetch company and relations data
       fetchCompanyData(setCompany);
       fetchRelationsData(setRelations);
-      fetchInvoicesData(data => {
-        // Ensure that relations data is available
-        if (!data || !relations) return;
-
-        // Modify the data here by renaming 'invoice_id' to 'id'
-        const modifiedData = data.map(item => ({
+    }, []);
+  
+    useEffect(() => {
+      // Check if both company and relations data have been loaded
+      if (company !== null && relations !== null) {
+        initialCompany.current = company;
+        initialRelations.current = relations;
+        setDataLoaded(true);
+      }
+    }, [company, relations]);
+  
+    useEffect(() => {
+      // Fetch invoices data when dataLoaded is true
+      if (dataLoaded) {
+        fetchInvoicesData(data => {
+          // Modify the data here...
+          const modifiedData = data.map(item => ({
             id: item.invoice_id,
             invoice_reference_no: item.invoice_id.replace(/-/g, '').slice(0,8),
             relation_name: relations.find(relation => relation.relation_id === item.relation_id).relation_name,
@@ -48,14 +64,13 @@ const Invoicing = () => {
             relation: relations.find(relation => relation.relation_id === item.relation_id),
             type: 'invoice',
             ...item
-        }));
-
-        // Set the modified data in the state
-        setInvoices(modifiedData);
-      });
-    }, [relations, company]);
-
-    console.log(invoices)
+          }));
+  
+          // Set the modified data in the state
+          setInvoices(modifiedData);
+        });
+      }
+    }, [dataLoaded]);
 
     return (
         <div>
