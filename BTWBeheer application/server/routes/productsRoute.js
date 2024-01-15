@@ -14,7 +14,7 @@ const { getCompanyById } = require('../services/companyService');
 router.post('/', [validateProduct, authenticateToken], async (req, res) => {
     try {
         const { company_id, invoice_id, quotation_id, product_description, quantity, price_per_unit_ex_vat, vat_percentage, discount_percentage } = req.body;
-
+        
         if (req.AuthCompanyId !== company_id) {
             return res.status(403).json({ error: 'Access denied' });
         }
@@ -30,7 +30,7 @@ router.post('/', [validateProduct, authenticateToken], async (req, res) => {
             vat_percentage,
             discount_percentage
         });
-    
+
         res.status(200).json({ product });
     } catch (error) {
         console.error(error);

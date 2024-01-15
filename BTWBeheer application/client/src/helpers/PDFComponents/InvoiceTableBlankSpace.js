@@ -13,16 +13,21 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     description: {
-        width: '60%',
+        width: '35%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     qty: {
-        width: '10%',
+        width: '15%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     rate: {
+        width: '20%',
+        borderRightColor: borderColor,
+        borderRightWidth: 1,
+    },
+    vat: {
         width: '15%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
@@ -40,6 +45,7 @@ const InvoiceTableBlankSpace = ({rowsCount}) => {
             <Text style={styles.description}>-</Text>
             <Text style={styles.qty}>-</Text>
             <Text style={styles.rate}>-</Text>
+            <Text style={styles.vat}>-</Text>
             <Text style={styles.amount}>-</Text>
         </View>
     )

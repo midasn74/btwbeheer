@@ -29,41 +29,20 @@ const styles = StyleSheet.create({
     }
 });
 
+const mapItemsToInvoiceFormat = (items) => {
+    return items.map((item, index) => ({
+      sno: index + 1,
+      desc: item.product_description,
+      qty: item.quantity,
+      rate: item.price_per_unit_ex_vat * ((item.vat_percentage/100)+1) * (1-(item.discount_percentage/100)), 
+      vat: item.vat_percentage
+    }));
+  };
+
 const InvoicePDF = ({invoice}) => {
     const invoiceData = {
         ...invoice,
-        items: [
-          {
-            sno: 1,
-            desc: "ad sunt culpa occaecat qui",
-            qty: 5,
-            rate: 405.89,
-          },
-          {
-            sno: 2,
-            desc: "cillum quis sunt qui aute",
-            qty: 5,
-            rate: 373.11,
-          },
-          {
-            sno: 3,
-            desc: "ea commodo labore culpa irure",
-            qty: 5,
-            rate: 458.61,
-          },
-          {
-            sno: 4,
-            desc: "nisi consequat et adipisicing dolor",
-            qty: 10,
-            rate: 725.24,
-          },
-          {
-            sno: 5,
-            desc: "proident cillum anim elit esse",
-            qty: 4,
-            rate: 141.02,
-          },
-        ],
+        items: mapItemsToInvoiceFormat(invoice.products)
     };
     
     return (

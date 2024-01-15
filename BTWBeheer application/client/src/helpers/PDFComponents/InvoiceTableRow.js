@@ -12,30 +12,32 @@ const styles = StyleSheet.create({
         fontStyle: 'bold',
     },
     description: {
-        width: '60%',
-        textAlign: 'left',
+        width: '35%',
+        textAlign: 'center',
         borderRightColor: borderColor,
         borderRightWidth: 1,
-        paddingLeft: 8,
     },
     qty: {
-        width: '10%',
-        borderRightColor: borderColor,
-        borderRightWidth: 1,
-        textAlign: 'right',
-        paddingRight: 8,
-    },
-    rate: {
         width: '15%',
         borderRightColor: borderColor,
+        textAlign: 'center',
         borderRightWidth: 1,
-        textAlign: 'right',
-        paddingRight: 8,
+    },
+    rate: {
+        width: '20%',
+        borderRightColor: borderColor,
+        textAlign: 'center',
+        borderRightWidth: 1,
+    },
+    vat: {
+        width: '15%',
+        borderRightColor: borderColor,
+        textAlign: 'center',
+        borderRightWidth: 1,
     },
     amount: {
         width: '15%',
-        textAlign: 'right',
-        paddingRight: 8,
+        textAlign: 'center',
     },
   });
 
@@ -45,8 +47,9 @@ const InvoiceTableRow = ({items}) => {
         <View style={styles.row} key={item.sno.toString()}>
             <Text style={styles.description}>{item.desc}</Text>
             <Text style={styles.qty}>{item.qty}</Text>
-            <Text style={styles.rate}>{item.rate}</Text>
-            <Text style={styles.amount}>{(item.qty * item.rate).toFixed(2)}</Text>
+            <Text style={styles.rate}>€{item.rate.toFixed(2)}</Text>
+            <Text style={styles.vat}>{item.vat}%</Text>
+            <Text style={styles.amount}>€{(item.qty * item.rate).toFixed(2)}</Text>
         </View>
     )
     return (<Fragment>{rows}</Fragment> )

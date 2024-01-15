@@ -4,6 +4,7 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import fetchCompanyData from '../api/getCompany';
 import fetchInvoicesData from '../api/getInvoices';
 import fetchRelationsData from '../api/getRelations';
+import fetchProductsDataByInvoice from '../api/getProductsByInvoice'
 
 import { EditDeleteDownload } from './buttons';
 
@@ -51,26 +52,40 @@ const Invoicing = () => {
       // Fetch invoices data when dataLoaded is true
       if (dataLoaded) {
         fetchInvoicesData(data => {
-          // Modify the data here...
-          const modifiedData = data.map(item => ({
-            id: item.invoice_id,
-            invoice_reference_no: item.invoice_id.replace(/-/g, '').slice(0,8),
-            relation_name: relations.find(relation => relation.relation_id === item.relation_id).relation_name,
-            creation_date_string: parseDateToString(item.creation_date),
-            due_date_string: parseDateToString(item.due_date),            
-            creation_date_object: item.creation_date,
-            due_date_object: item.due_date,
-            company: company,
-            relation: relations.find(relation => relation.relation_id === item.relation_id),
-            type: 'invoice',
-            ...item
-          }));
-  
-          // Set the modified data in the state
-          setInvoices(modifiedData);
+            if (!data) {
+                setInvoices(null); // Set an empty array if there are no invoices
+            } else {
+                // Your existing code to modify and set the data
+
+                // Modify the data here...
+                const modifiedData = data.map(async item => {
+                    const products = await fetchProductsDataByInvoice(item.invoice_id);
+                    return {
+                        id: item.invoice_id,
+                        invoice_reference_no: item.invoice_id.replace(/-/g, '').slice(0,8),
+                        relation_name: relations.find(relation => relation.relation_id === item.relation_id).relation_name,
+                        creation_date_string: parseDateToString(item.creation_date),
+                        due_date_string: parseDateToString(item.due_date),            
+                        creation_date_object: item.creation_date,
+                        due_date_object: item.due_date,
+                        company: company,
+                        relation: relations.find(relation => relation.relation_id === item.relation_id),
+                        type: 'invoice',
+                        products: products || [],
+                        ...item,
+                    };
+                });
+        
+                // Set the modified data in the state
+                Promise.all(modifiedData).then(modifiedInvoices => {
+                    setInvoices(modifiedInvoices);
+                });
+            }
         });
       }
     }, [dataLoaded]);
+
+    console.log(invoices)
 
     return (
         <div>
