@@ -37,7 +37,7 @@ const mapItemsToInvoiceFormat = (items) => {
       rate: item.price_per_unit_ex_vat * ((item.vat_percentage/100)+1) * (1-(item.discount_percentage/100)), 
       vat: item.vat_percentage
     }));
-  };
+};
 
 const InvoicePDF = ({invoice}) => {
     const invoiceData = {

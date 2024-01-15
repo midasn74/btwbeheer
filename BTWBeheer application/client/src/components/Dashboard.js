@@ -67,18 +67,40 @@ const Dashboard = () => {
     let invoicesThisMonthCount = 0;
     let invoicesThisYearCount = 0;
 
-    if (invoices != null){
-        invoices.forEach((invoice) => {
-            const inputDate = new Date(invoice.creation_date);
+    if (invoices != null ){
+        if (invoices.length > 0){
+            invoices.forEach((invoice) => {
+                const inputDate = new Date(invoice.creation_date);
 
-            // Get today's date
-            const today = new Date();
+                // Get today's date
+                const today = new Date();
 
-            // Check if the year, month, and week are the same
-            invoicesThisYearCount += (inputDate.getFullYear() === today.getFullYear()) ? 1 : 0;
-            invoicesThisMonthCount += (inputDate.getMonth() === today.getMonth()) ? 1 : 0;
-            invoicesThisWeekCount += (inputDate.getDate() - inputDate.getDay() === today.getDate() - today.getDay()) ? 1 : 0;
-        })
+                // Check if the year, month, and week are the same
+                invoicesThisYearCount += (inputDate.getFullYear() === today.getFullYear()) ? 1 : 0;
+                invoicesThisMonthCount += (inputDate.getMonth() === today.getMonth()) ? 1 : 0;
+                invoicesThisWeekCount += (inputDate.getDate() - inputDate.getDay() === today.getDate() - today.getDay()) ? 1 : 0;
+            })
+        }
+    }
+
+    let quotesThisWeekCount = 0;
+    let quotesThisMonthCount = 0;
+    let quotesThisYearCount = 0;
+
+    if (quotations != null ){
+        if (quotations.length > 0){
+            quotations.forEach((quote) => {
+                const inputDate = new Date(quote.creation_date);
+
+                // Get today's date
+                const today = new Date();
+
+                // Check if the year, month, and week are the same
+                quotesThisYearCount += (inputDate.getFullYear() === today.getFullYear()) ? 1 : 0;
+                quotesThisMonthCount += (inputDate.getMonth() === today.getMonth()) ? 1 : 0;
+                quotesThisWeekCount += (inputDate.getDate() - inputDate.getDay() === today.getDate() - today.getDay()) ? 1 : 0;
+            })
+        }
     }
 
     let nextVatDeclarationDate, previousVatDeclarationDate;
@@ -117,17 +139,16 @@ const Dashboard = () => {
 
         <div style={{ display: "flex" }}>
             <div style={{ borderRadius: '7px', border: '3px solid #fff', padding: "25px", margin: "10px" }}>
-            <h2>Quotes created</h2>
-                <div><p style={{ display: "inline" }}><b>This week: </b></p><p style={{ display: "inline" }}>{quotations == null ? 0 : quotations?.length}</p></div>
-                <div><p style={{ display: "inline" }}><b>This month: </b></p><p style={{ display: "inline" }}>{quotations == null ? 0 : quotations?.length}</p></div>
-                <div><p style={{ display: "inline" }}><b>This year: </b></p><p style={{ display: "inline" }}>{quotations == null ? 0 : quotations?.length}</p></div>
-            </div>
-
-            <div style={{ borderRadius: '7px', border: '3px solid #fff', padding: "25px", margin: "10px" }}>
             <h2>invoices created</h2>
                 <div><p style={{ display: "inline" }}><b>This week: </b></p><p style={{ display: "inline" }}>{invoices == null ? 0 : invoicesThisWeekCount}</p></div>
                 <div><p style={{ display: "inline" }}><b>This month: </b></p><p style={{ display: "inline" }}>{invoices == null ? 0 : invoicesThisMonthCount}</p></div>
                 <div><p style={{ display: "inline" }}><b>This year: </b></p><p style={{ display: "inline" }}>{invoices == null ? 0 : invoicesThisYearCount}</p></div>
+            </div>
+            <div style={{ borderRadius: '7px', border: '3px solid #fff', padding: "25px", margin: "10px" }}>
+            <h2>Quotes created</h2>
+                <div><p style={{ display: "inline" }}><b>This week: </b></p><p style={{ display: "inline" }}>{quotations == null ? 0 : quotesThisWeekCount}</p></div>
+                <div><p style={{ display: "inline" }}><b>This month: </b></p><p style={{ display: "inline" }}>{quotations == null ? 0 : quotesThisMonthCount}</p></div>
+                <div><p style={{ display: "inline" }}><b>This year: </b></p><p style={{ display: "inline" }}>{quotations == null ? 0 : quotesThisYearCount}</p></div>
             </div>
         </div>
 
