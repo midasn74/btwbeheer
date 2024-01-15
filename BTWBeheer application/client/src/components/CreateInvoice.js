@@ -135,8 +135,7 @@ const CreateInvoice = () => {
                 'Authorization': getJWT()
                 }
             });
-            console.log(productResponse)
-            
+
             if (productResponse.status !== 200) {
                 throw new Error('Product creation failed');
             } else {
@@ -149,7 +148,7 @@ const CreateInvoice = () => {
     }
 
     // Redirect or perform other actions after invoice and product creation
-    //window.location.href = '/Invoicing';
+    window.location.href = '/Invoicing';
   };
 
   const [items, setItems] = useState([]);

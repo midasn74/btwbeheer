@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 
 import fetchCompanyData from '../api/getCompany';
@@ -54,6 +54,8 @@ const Invoicing = () => {
         setInvoices(modifiedData);
       });
     }, [relations, company]);
+
+    console.log(invoices)
 
     return (
         <div>
