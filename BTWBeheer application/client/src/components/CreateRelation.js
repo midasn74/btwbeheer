@@ -79,6 +79,15 @@ const CreateRelation = () => {
   return (
     <>
         <Card className="mx-auto" style={{ width: '24rem', padding: '10px' }} >
+
+        <Button
+            variant="danger"
+            style={{ position: 'absolute', top: '10px', right: '10px' }}
+            onClick={() => (window.location.href = '/relations')}
+        >
+            Return
+        </Button>
+
             <Card.Body>
                 <Card.Title>Create a new relation</Card.Title>
 

@@ -49,7 +49,7 @@ app.use(express.json({ limit: '200kb' }));
 app.use(cors());
 
 // Import routes
-const routeNames = ['account', 'companies', 'invoices', 'relations', 'quotations'];
+const routeNames = ['account', 'companies', 'invoices', 'relations', 'quotations', 'products'];
 
 routeNames.forEach(routeName => {
   const routes = require(`./routes/${routeName}Route`);

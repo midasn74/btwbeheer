@@ -53,6 +53,15 @@ const ChangePassword = () => {
   return (
     <>
       <Card className="mx-auto" style={{ width: '24rem', padding: '10px' }}>
+
+      <Button
+            variant="danger"
+            style={{ position: 'absolute', top: '10px', right: '10px' }}
+            onClick={() => (window.location.href = '/')}
+        >
+            Return
+        </Button>
+
         <Card.Body>
           <Card.Title>Change Password</Card.Title>
 
