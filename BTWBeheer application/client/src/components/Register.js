@@ -102,7 +102,7 @@ const Login = () => {
 
   return (
     <>
-        <Card className="mx-auto" style={{ width: '24rem', padding: '10px' }} >
+        <Card className="mx-auto" style={{ width: '32rem', padding: '10px' }} >
             <Card.Img variant="top" style={{ padding: '15px' }} src="img/logoFull.svg" />
             <Card.Body>
                 <Card.Title>Register</Card.Title>
