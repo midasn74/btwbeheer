@@ -56,15 +56,15 @@ module.exports = (sequelize) => {
         },
         relation_kvk_number: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         relation_vat_number: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         relation_iban: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         relation_salutation: {
             type: DataTypes.STRING,

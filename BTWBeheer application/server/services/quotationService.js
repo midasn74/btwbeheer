@@ -11,16 +11,16 @@ async function createQuotation({
     relation_id,
     quotation_description,
     creation_date,
-    due_date,
-    payment_term_days
+    valid_until,
+    quotation_validity_days
 }) {
     const quotation = await Quotation.create({ 
         company_id,
         relation_id,
         quotation_description,
         creation_date,
-        due_date,
-        payment_term_days
+        valid_until,
+        quotation_validity_days
     });
 
     return quotation;

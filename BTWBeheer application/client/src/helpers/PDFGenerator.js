@@ -4,8 +4,10 @@ import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/render
 import InvoiceTitle from './PDFComponents/InvoiceTitle'
 import BillTo from './PDFComponents/BillTo'
 import InvoiceNo from './PDFComponents/InvoiceNo'
+import QuoteNo from './PDFComponents/QuoteNo'
 import InvoiceItemsTable from './PDFComponents/InvoiceItemsTable'
 import InvoiceThankYouMsg from './PDFComponents/InvoiceThankYouMsg'
+import QuoteThankYouMsg from './PDFComponents/QuoteThankYouMsg'
 
 const styles = StyleSheet.create({
     page: {
@@ -39,6 +41,16 @@ const mapItemsToInvoiceFormat = (items) => {
     }));
 };
 
+const mapItemsToQuotationFormat = (items) => {
+    return items.map((item, index) => ({
+      sno: index + 1,
+      desc: item.product_description,
+      qty: item.quantity,
+      rate: item.price_per_unit_ex_vat * ((item.vat_percentage/100)+1) * (1-(item.discount_percentage/100)), 
+      vat: item.vat_percentage
+    }));
+};
+
 const InvoicePDF = ({invoice}) => {
     const invoiceData = {
         ...invoice,
@@ -59,18 +71,23 @@ const InvoicePDF = ({invoice}) => {
     );
 };             
 
-const QuotationPDF = (quotation) => {
+const QuotationPDF = ({quotation}) => {
+    const invoiceData = {
+        ...quotation,
+        items: mapItemsToQuotationFormat(quotation.products)
+    };
+    
     return (
         <Document>
-          <Page size="A4" style={styles.page}>
-            <View style={styles.section}>
-              <Text>section 1</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>section 2</Text>
-            </View>
-          </Page>
-        </Document>
+        <Page size="A4" style={styles.page}>
+            <Image style={styles.logo} src={quotation.company.company_logo} />
+            <InvoiceTitle title='Quotation'/>
+            <QuoteNo invoice={invoiceData}/>
+            <BillTo invoice={invoiceData}/>
+            <InvoiceItemsTable invoice={invoiceData} />
+            <QuoteThankYouMsg invoice={invoiceData} />
+        </Page>
+    </Document>
     );
 };
 

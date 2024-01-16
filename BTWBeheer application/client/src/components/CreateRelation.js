@@ -18,6 +18,18 @@ const RequiredAsterisks = (
     <element class="text-danger">*</element>
 )
 
+function replaceEmptyWithNull(obj) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (typeof obj[key] === 'object' && obj[key] !== undefined) {
+          replaceEmptyWithNull(obj[key]); // Recursive call for nested objects
+        } else if (obj[key] === '') {
+          obj[key] = undefined;
+        }
+      }
+    }
+  }
+
 const CreateRelation = () => {
   const [formData, setFormData] = useState({
     company_id: getCompanyId(),
@@ -47,6 +59,8 @@ const CreateRelation = () => {
     document.querySelector('#main-form-submit-button').disabled = true;
 
     console.log('Relation creation form submitted:', formData);
+
+    replaceEmptyWithNull(formData);
 
     try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/relations/`, formData, {
@@ -136,16 +150,16 @@ const CreateRelation = () => {
                     <Form.Label><b>Relation details</b></Form.Label>
 
                     <Form.Group className="mb-3" controlId="formDetails">
-                        <Form.Label>Relation KVK number{RequiredAsterisks}</Form.Label>
+                        <Form.Label>Relation KVK number</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
-                        <Form.Control required type="text" name="relation_kvk_number" value={formData.relation_kvk_number} onChange={handleChange} placeholder="123456789" />
+                        <Form.Control type="text" name="relation_kvk_number" value={formData.relation_kvk_number} onChange={handleChange} placeholder="123456789" />
                     
-                        <Form.Label>Relation VAT number{RequiredAsterisks}</Form.Label>
+                        <Form.Label>Relation VAT number</Form.Label>
                         <InfoHover message="This information will be noted on invoices and quotations." />
-                        <Form.Control required type="text" name="relation_vat_number" value={formData.relation_vat_number} onChange={handleChange} placeholder="NL123456789B12" />
+                        <Form.Control type="text" name="relation_vat_number" value={formData.relation_vat_number} onChange={handleChange} placeholder="NL123456789B12" />
 
-                        <Form.Label>Relation IBAN number{RequiredAsterisks}</Form.Label>
-                        <Form.Control required type="text" name="relation_iban" value={formData.relation_iban} onChange={handleChange} placeholder="NL12ABCD123456789" />
+                        <Form.Label>Relation IBAN number</Form.Label>
+                        <Form.Control type="text" name="relation_iban" value={formData.relation_iban} onChange={handleChange} placeholder="NL12ABCD123456789" />
                     </Form.Group>
 
                     { errorMessage != null ? 

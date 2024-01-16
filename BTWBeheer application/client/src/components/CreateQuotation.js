@@ -10,14 +10,14 @@ const RequiredAsterisks = (
   <span className="text-danger">*</span>
 );
 
-const CreateInvoice = () => {
+const CreateQuotation = () => {
   const [formData, setFormData] = useState({
     company_id: getCompanyId(),
     relation_id: '',
-    invoice_description: '',
+    quotation_description: '',
     creation_date: '',
-    due_date: '',
-    payment_term_days: '',
+    valid_until: '',
+    quotation_validity_days: '',
   });
 
   const [relations, setRelations] = useState(null);
@@ -53,18 +53,18 @@ const CreateInvoice = () => {
       updatedFormData = { ...updatedFormData, [name]: value };
     }
 
-    if (name === 'payment_term_days') {
+    if (name === 'quotation_validity_days') {
       if (!isNaN(value) && parseInt(value) >= 0) {
         const creationDate = formData.creation_date;
         if (creationDate !== '') {
           const dueDate = new Date(creationDate);
           dueDate.setDate(dueDate.getDate() + parseInt(value));
-          updatedFormData = { ...updatedFormData, due_date: dueDate.toISOString().split('T')[0] };
+          updatedFormData = { ...updatedFormData, valid_until: dueDate.toISOString().split('T')[0] };
         }
       } else {
-        updatedFormData = { ...updatedFormData, due_date: '', payment_term_days: '' };
+        updatedFormData = { ...updatedFormData, valid_until: '', quotation_validity_days: '' };
       }
-    } else if (name === 'due_date') {
+    } else if (name === 'valid_until') {
       const creationDate = formData.creation_date;
       const enteredDueDate = new Date(value);
       const today = new Date();
@@ -72,21 +72,21 @@ const CreateInvoice = () => {
       if (enteredDueDate > today && creationDate !== '') {
         const diffTime = Math.abs(enteredDueDate - new Date(creationDate));
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        updatedFormData = { ...updatedFormData, payment_term_days: diffDays.toString() };
+        updatedFormData = { ...updatedFormData, quotation_validity_days: diffDays.toString() };
       } else {
-        updatedFormData = { ...updatedFormData, due_date: '', payment_term_days: '' };
+        updatedFormData = { ...updatedFormData, valid_until: '', quotation_validity_days: '' };
       }
     } else if (name === 'creation_date') {
       const enteredCreationDate = new Date(value);
-      const enteredDueDate = new Date(formData.due_date);
+      const enteredDueDate = new Date(formData.valid_until);
       const today = new Date();
 
       if (enteredCreationDate <= today && enteredCreationDate < enteredDueDate) {
         const diffTime = Math.abs(enteredDueDate - enteredCreationDate);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        updatedFormData = { ...updatedFormData, payment_term_days: diffDays.toString() };
+        updatedFormData = { ...updatedFormData, quotation_validity_days: diffDays.toString() };
       } else {
-        updatedFormData = { ...updatedFormData, due_date: '', payment_term_days: '' };
+        updatedFormData = { ...updatedFormData, valid_until: '', quotation_validity_days: '' };
       }
     }
 
@@ -98,24 +98,24 @@ const CreateInvoice = () => {
 
     document.querySelector('#main-form-submit-button').disabled = true;
 
-    console.log('Invoice creation form submitted:', formData);
+    console.log('Quotation creation form submitted:', formData);
 
     let response;
 
     try {
-      response = await axios.post(`${process.env.REACT_APP_API_URL}/invoices/`, formData, {
+      response = await axios.post(`${process.env.REACT_APP_API_URL}/quotations/`, formData, {
         headers: {
           'Authorization': getJWT()
         }
       });
 
       if (response.status !== 200) {
-        throw new Error('Invoice creation failed');
+        throw new Error('Quotation creation failed');
       } else {
-        console.log('Invoice creation successful:', response.data);
+        console.log('Quotation creation successful:', response.data);
       }
     } catch (error) {
-      console.error('Invoice creation failed:', error);
+      console.error('Quotation creation failed:', error);
       setErrorMessage(error.response.data.errors[0].msg);
       document.querySelector('#main-form-submit-button').disabled = false;
 
@@ -123,7 +123,7 @@ const CreateInvoice = () => {
     }
 
     // Prepare data for product creation
-    const productData = parseItemsForSubmission(response.data.invoice.invoice_id, null);
+    const productData = parseItemsForSubmission(null, response.data.quotation.quotation_id);
 
     console.log(productData)
 
@@ -147,8 +147,8 @@ const CreateInvoice = () => {
         }
     }
 
-    // Redirect or perform other actions after invoice and product creation
-    window.location.href = '/Invoicing';
+    // Redirect or perform other actions after quotation and product creation
+    window.location.href = '/Quoting';
   };
 
   const [items, setItems] = useState([]);
@@ -236,13 +236,13 @@ const CreateInvoice = () => {
       <Button
         variant="danger"
         style={{ position: 'absolute', top: '10px', right: '10px' }}
-        onClick={() => (window.location.href = '/Invoicing')}
+        onClick={() => (window.location.href = '/Quoting')}
       >
         Return
       </Button>
 
         <Card.Body>
-          <Card.Title>Create a new invoice</Card.Title>
+          <Card.Title>Create a new quotation</Card.Title>
 
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formRelation">
@@ -260,25 +260,25 @@ const CreateInvoice = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formDescription">
-              <Form.Label>Invoice Description{RequiredAsterisks}</Form.Label>
-              <Form.Control required type="text" name="invoice_description" value={formData.invoice_description} onChange={handleChange} placeholder="Enter Description" />
+              <Form.Label>Quotation Description{RequiredAsterisks}</Form.Label>
+              <Form.Control required type="text" name="quotation_description" value={formData.quotation_description} onChange={handleChange} placeholder="Enter Description" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formDates">
               <Form.Label>Creation Date{RequiredAsterisks}</Form.Label>
               <Form.Control required type="date" name="creation_date" value={formData.creation_date} onChange={handleChange} />
 
-              <Form.Label>Due Date{RequiredAsterisks}</Form.Label>
-              <Form.Control required type="date" name="due_date" value={formData.due_date} onChange={handleChange} />
+              <Form.Label>Valid until{RequiredAsterisks}</Form.Label>
+              <Form.Control required type="date" name="valid_until" value={formData.valid_until} onChange={handleChange} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formPayment">
-              <Form.Label>Payment Term (days){RequiredAsterisks}</Form.Label>
-              <Form.Control required type="number" name="payment_term_days" value={formData.payment_term_days} onChange={handleChange} />
+              <Form.Label>Validity Term (days){RequiredAsterisks}</Form.Label>
+              <Form.Control required type="number" name="quotation_validity_days" value={formData.quotation_validity_days} onChange={handleChange} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formAddItem">
-              <Form.Label>Add Item to Invoice</Form.Label>
+              <Form.Label>Add Item to Quotation</Form.Label>
               <div className="d-flex align-items-center">
                 <Form.Control className="me-2" type="text" name="product_name" value={newItem.product_name} onChange={handleNewItemChange} placeholder="Product Name" />
                 <Form.Control style={{ width: "100px" }} className="me-2" type="text" name="quantity" value={newItem.quantity} onChange={handleNewItemChange} placeholder="Quantity" />
@@ -353,4 +353,4 @@ const CreateInvoice = () => {
   );
 };
 
-export default CreateInvoice;
+export default CreateQuotation;

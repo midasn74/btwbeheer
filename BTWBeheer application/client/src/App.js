@@ -13,6 +13,7 @@ import Quoting from './components/Quoting';
 import Relations from './components/Relations';
 import CreateRelation from './components/CreateRelation';
 import CreateInvoice from './components/CreateInvoice';
+import CreateQuotation from './components/CreateQuotation';
 
 function App() {
   return (
@@ -95,6 +96,16 @@ function App() {
                     element = {
                         <ProtectedRoute>
                             <CreateInvoice />
+                        </ProtectedRoute>
+                    }
+                />
+                
+                {/* Protected route */}
+                <Route
+                    path="/CreateQuotation"
+                    element = {
+                        <ProtectedRoute>
+                            <CreateQuotation />
                         </ProtectedRoute>
                     }
                 />

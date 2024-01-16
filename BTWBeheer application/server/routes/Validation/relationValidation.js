@@ -38,15 +38,15 @@ const validateRelation = [
         .isString().withMessage('Relation country must be a string'),
 
     body('relation_kvk_number')
-        .notEmpty().withMessage('A relation kvk number is required')
+        .optional() 
         .isString().withMessage('Relation kvk number must be a string'),
 
     body('relation_vat_number')
-        .notEmpty().withMessage('A relation vat number is required')
+        .optional() 
         .isString().withMessage('Relation vat number must be a string'),
 
     body('relation_iban')
-        .notEmpty().withMessage('A relation iban is required')
+        .optional() 
         .isIBAN().withMessage('Relation iban must be an iban'),
 
     body('relation_salutation')
