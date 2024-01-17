@@ -113,8 +113,9 @@ const Invoicing = () => {
                     </p>
                 </Alert>
             : 
-                <div style={{  background: '#bbb', borderRadius: '7px', border: '3px solid #fff' }}>
+                <div>
                     <DataGrid
+                        style={{  background: '#888', color: '#000000DE', borderRadius: '7px', border: 'none', }}
                         sx={{
                             [`& .${gridClasses.columnHeader}, & .${gridClasses.cell}`]: {
                             outline: 'transparent',

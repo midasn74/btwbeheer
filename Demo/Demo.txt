@@ -1,0 +1,36 @@
+Register a new account
+ - x@gmail.com
+ - Password!123
+ - 0642532063
+ - NL22INGB7942781380
+ - NL123456789B01
+
+Create a relation
+ (particulier of bedrijf)
+ - 0678923733
+ - NL123456789B01
+ - NL15INGB5965981937
+
+Create an invoice
+
+Show invoice, crtl+p print
+
+Change logo
+
+Show invoice
+
+Create quotation
+
+Login filled account
+ - midasnies74@hotmail.com
+ - Wachtwoord&10
+
+Show filled tables
+
+Show invoice and or quotation
+
+Show e2e tests
+ - npx cypress open
+
+Show github automated actions
+ (Docker, E2E, Unit, Integration)
