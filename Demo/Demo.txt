@@ -34,3 +34,7 @@ Show e2e tests
 
 Show github automated actions
  (Docker, E2E, Unit, Integration)
+ - https://github.com/midasn74/btwbeheer/actions
+
+Sonarcloud
+ - https://sonarcloud.io/summary/overall?id=midasn74_btwbeheer
